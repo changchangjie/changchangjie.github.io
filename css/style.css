@@ -1875,9 +1875,6 @@ a.article-title:hover {
     line-height: 48px;
   }
 }
-#recent-post li {
-  padding: 10px 0 10px 94px;
-}
 #recent-post li:before,
 #recent-post li:after {
   content: "";
