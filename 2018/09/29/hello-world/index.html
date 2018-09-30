@@ -250,7 +250,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2018/09/29/hello-world/" data-id="cjmohazvc0001n0vzgracokos" class="article-share-link"><i class="fas fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2018/09/29/hello-world/" data-id="cjmoikgot0000s2vz97zwtili" class="article-share-link"><i class="fas fa-share"></i>分享到</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -343,6 +343,10 @@
 
 
     
+    
+        <section id="comments">
+	<div id="commentContainer"></div>
+</section>
     
 
 </section>
@@ -444,6 +448,22 @@
     </div>
 </footer>
         
+    
+	<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+	<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+	<script>
+		var gitment = new Gitment({
+			owner: 'changchangjie',
+			repo: 'changchangjie.github.io',
+			oauth: {
+				client_id: '47fac6808a5bb298f7f4',
+				client_secret: '3f5febf8e9a8152f311c4df2873001607e8658d2',
+			},
+		})
+		gitment.render('commentContainer')
+	</script>
+	
+
 
 
     
