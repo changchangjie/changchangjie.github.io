@@ -181,12 +181,6 @@ code {
 #container > .outer {
   margin-bottom: 30px;
 }
-#main {
-  margin: auto;
-  width: 70%;
-  display: block;
-  float: none;
-}
 @media screen and (min-width: 1200px) {
   #main {
     display: inline;
