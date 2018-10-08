@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>常杰|个人博客</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2018-09-30T09:51:32.210Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>changjie</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>transient的作用与使用</title>
+    <link href="http://yoursite.com/2018/09/30/transient%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2018/09/30/transient的作用与使用/</id>
+    <published>2018-09-30T04:12:57.000Z</published>
+    <updated>2018-09-30T09:51:32.210Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;transient的作用与使用&quot;&gt;&lt;a href=&quot;#transient的作用与使用&quot; class=&quot;headerlink&quot; title=&quot;transient的作用与使用&quot;&gt;&lt;/a&gt;transient的作用与使用&lt;/h3&gt;&lt;p&gt;对象实现了序列化接口时，这个类所有属性和方法都可以序列化和被反序列化，当我们不想序列化某些属性时，使用transient修饰这些属性即可，比如对于一些敏感信息(密码，银行卡号等)不希望在网络中传输&lt;br&gt;
+    
+    </summary>
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>测试</title>
+    <link href="http://yoursite.com/2018/09/30/hello/"/>
+    <id>http://yoursite.com/2018/09/30/hello/</id>
+    <published>2018-09-30T04:12:57.000Z</published>
+    <updated>2018-09-30T08:39:31.112Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+  </entry>
+  
+</feed>
