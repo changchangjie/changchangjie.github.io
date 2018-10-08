@@ -191,10 +191,10 @@ code {
 }
 @media screen and (min-width: 800px) and (max-width: 1199px) {
   #main {
-    display: inline;
-    float: left;
-    width: 67.6923076923077%;
-    margin: 0 0.769230769230769%;
+    margin: auto;
+    width: 70%;
+    display: block;
+    float: none;
   }
 }
 @media screen and (min-width: 560px) and (max-width: 799px) {
