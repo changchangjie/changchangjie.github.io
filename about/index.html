@@ -252,9 +252,24 @@
 
     
     
-        <section id="comments">
-	<div id="commentContainer"></div>
-</section>
+        <section id="comments"><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<div class="gitalk">
+    <div id="gitalk-container"></div>
+    <script type="text/javascript">
+        const gitalk = new Gitalk({
+            clientID: '33b6bc5887cd7c6d9dd4',
+            clientSecret: '7ba05c18114a1d462d63db900bc8d4392afb7748',
+            repo: 'changchangjie.github.io',
+            owner: 'changchangjie',
+            admin: ['changjie'],
+            id: "http://yoursite.com/about/index.html".substr(19,50),      // Ensure uniqueness and length less than 50
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</div></section>
     
 
 </section>
@@ -270,21 +285,24 @@
     </div>
 </footer>
         
-    
-	<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-	<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-	<script>
-		var gitment = new Gitment({
-			owner: 'changchangjie',
-			repo: 'changchangjie.github.io',
-			oauth: {
-				client_id: '33b6bc5887cd7c6d9dd4',
-				client_secret: '7ba05c18114a1d462d63db900bc8d4392afb7748',
-			},
-		})
-		gitment.render('commentContainer')
-	</script>
-	
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<div class="gitalk">
+    <div id="gitalk-container"></div>
+    <script type="text/javascript">
+        const gitalk = new Gitalk({
+            clientID: '33b6bc5887cd7c6d9dd4',
+            clientSecret: '7ba05c18114a1d462d63db900bc8d4392afb7748',
+            repo: 'changchangjie.github.io',
+            owner: 'changchangjie',
+            admin: ['changjie'],
+            id: "http://yoursite.com/about/index.html".substr(19,50),      // Ensure uniqueness and length less than 50
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</div>
 
 
 
