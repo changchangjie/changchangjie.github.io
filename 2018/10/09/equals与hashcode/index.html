@@ -5,17 +5,17 @@
     
     <title>Java基础-equals与hashcode | Changjie&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="title: Java基础-equals与hashcodedate: 2018-10-09 15:00:00categories:   java基础   equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个">
+    <meta name="description" content="equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java基础-equals与hashcode">
 <meta property="og:url" content="http://yoursite.com/2018/10/09/equals与hashcode/index.html">
 <meta property="og:site_name" content="Changjie&#39;s blog">
-<meta property="og:description" content="title: Java基础-equals与hashcodedate: 2018-10-09 15:00:00categories:   java基础   equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个">
+<meta property="og:description" content="equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-09T07:25:42.247Z">
+<meta property="og:updated_time" content="2018-10-09T07:27:27.209Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java基础-equals与hashcode">
-<meta name="twitter:description" content="title: Java基础-equals与hashcodedate: 2018-10-09 15:00:00categories:   java基础   equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个">
+<meta name="twitter:description" content="equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容">
     
 
     
@@ -191,13 +191,7 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <hr>
-<p>title: Java基础-equals与hashcode<br>date: 2018-10-09 15:00:00<br>categories: </p>
-<ul>
-<li>java基础</li>
-</ul>
-<hr>
-<h3 id="equals方法"><a href="#equals方法" class="headerlink" title="equals方法"></a>equals方法</h3><p>euqals()作为Object的方法，用于判断两个对象是否相等<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+            <h3 id="equals方法"><a href="#equals方法" class="headerlink" title="equals方法"></a>equals方法</h3><p>euqals()作为Object的方法，用于判断两个对象是否相等<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容<br><a id="more"></a></p>
 <h3 id="hashcode方法"><a href="#hashcode方法" class="headerlink" title="hashcode方法"></a>hashcode方法</h3><p>hashCode()也是Object的方法，用于给对象返回一个hash code值。这个方法被用于hash tables，例如HashMap<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
 <p>是一个本地方法，它的实现是根据本地机器相关,像String 、Math、Integer、Double等这些封装类已经将其重写了</p>
