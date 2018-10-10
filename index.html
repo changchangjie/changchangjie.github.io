@@ -246,7 +246,7 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            <p><p>ArrayList内部是有Object数组实现的，对ArrayList类的实例的所有的操作底层都是基于数组的<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">transient</span> Object[] elementData;</span><br></pre></td></tr></table></figure></p>
+            <p><p>ArrayList 的底层是数组队列，相当于动态数组。与 Java 中的数组相比，它的容量能动态增长<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">transient</span> Object[] elementData;</span><br></pre></td></tr></table></figure></p>
 <p>transient作用是为了序列化时只序列化数组内的实际元素<br></p>
             <p class="article-more-link">
                 <a href="/2018/10/10/Java集合-List之ArrayList/#more">查看更多</a>
