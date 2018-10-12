@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>多线程-ThreadPoolExecutor用法 | Changjie&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="属性1234567int corePoolSize;//核心线程数，默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为trueint maximumPoolSize//线程池所能容纳的最大线程数。超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效lon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程-ThreadPoolExecutor用法">
+<meta property="og:url" content="http://yoursite.com/2018/10/12/多线程-ThreadPoolExecutor用法/index.html">
+<meta property="og:site_name" content="Changjie&#39;s blog">
+<meta property="og:description" content="属性1234567int corePoolSize;//核心线程数，默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为trueint maximumPoolSize//线程池所能容纳的最大线程数。超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效lon">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-12T07:24:33.690Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程-ThreadPoolExecutor用法">
+<meta name="twitter:description" content="属性1234567int corePoolSize;//核心线程数，默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为trueint maximumPoolSize//线程池所能容纳的最大线程数。超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效lon">
+    
+
+    
+        <link rel="alternate" href="https://changjie.me/atom.xml" title="Changjie&#39;s blog" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="https://static.changjie.me/img/logo.jpg" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome5/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/libs/font-awesome5/css/fa-brands.min.css">
+    <link rel="stylesheet" href="/libs/font-awesome5/css/fa-solid.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Changjie&#39;s blog</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="https://static.changjie.me/img/logo.jpg" />
+                            <i class="fas fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fas fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <script type='text/javascript'>
+                $('body').append("<style type='text/css'>@media screen and (min-width: 1200px) { #main {margin: auto; width: 70%; display: block; float:none;}}</style>");
+                </script>
+                <script type='text/javascript'>
+                document.querySelector('style').textContent += "@media screen and (max-width: 1199px) and (min-width: 800px) { #main {margin: auto; width: 70%; display: block; float:none;}}"
+                </script>
+            
+            <section id="main"><article id="post-多线程-ThreadPoolExecutor用法" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            多线程-ThreadPoolExecutor用法
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fas fa-calendar-alt"></i>
+        <a href="/2018/10/12/多线程-ThreadPoolExecutor用法/">
+            <time datetime="2018-10-12T07:10:00.000Z" itemprop="datePublished">2018-10-12</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fas fa-folder"></i>
+        <a class="article-category-link" href="/categories/多线程/">多线程</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> corePoolSize;<span class="comment">//核心线程数，默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为true</span></span><br><span class="line"><span class="keyword">int</span> maximumPoolSize<span class="comment">//线程池所能容纳的最大线程数。超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效</span></span><br><span class="line"><span class="keyword">long</span> keepAliveTime<span class="comment">//非核心线程的闲置超时时间，超过这个时间就会被回收</span></span><br><span class="line">TimeUnit unit<span class="comment">//指定keepAliveTime的单位</span></span><br><span class="line">BlockingQueue&lt;Runnable&gt; workQueue<span class="comment">//线程池中的任务队列，常用的是：ArrayBlockingQueue、LinkedBlockingQueue、SynchronousQueue</span></span><br><span class="line">ThreadFactory threadFactory<span class="comment">//线程工厂，提供创建新线程的功能</span></span><br><span class="line">RejectedExecutionHandler handler<span class="comment">//拒绝策略，线程池线程数达到最大值并且任务队列满时触发</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><ol>
+<li>getCorePoolSize()：返回核心线程数量，即corePoolSize</li>
+<li>getPoolSize()：返回当前线程池中线程数，刚创建线程池时线程数为0，直到有任务提交过来才创建线程</li>
+<li>getQueue().size()：获取当前任务队列的实际容量</li>
+</ol>
+<h3 id="任务队列"><a href="#任务队列" class="headerlink" title="任务队列"></a>任务队列</h3><ol>
+<li>SynchronousQueue：直接提交的队列</li>
+</ol>
+<p>该任务队列没有容量，新任务总是提交给线程执行，如果活跃线程达到最大值，新任务提交会执行拒绝策略，这种队列会导致线程数过多或太容易触发拒绝策略一般不建议使用</p>
+<ol start="2">
+<li>ArrayBlockingQueue：有界任务队列</li>
+</ol>
+<p>构造函数必须传容量表示任务队列的最大值<br>新任务提交，若线程池实际线程数小于核心线程数的话会创建线程，等于核心线程数的话会把任务放入队列中，队列满的话创建新的线程，达到最大线程数并且队列满的话执行拒绝策略</p>
+<ol start="3">
+<li>LinkedBlockingQueue：无界任务队列</li>
+</ol>
+<p>新任务提交，若线程池实际线程数小于核心线程数的话会创建线程，等于核心线程数的话会把任务放入队列中，由于是无界（其实也是有最大值的），队列基本不会满，新任务会一直放入队列中而不会创建新的线程，使用不当会发生内存溢出<br>所以一般会设置个容量，队列满时创建新线程，达到最大线程数并且队列满的话执行拒绝策略</p>
+<h3 id="拒绝策略"><a href="#拒绝策略" class="headerlink" title="拒绝策略"></a>拒绝策略</h3><ol>
+<li><p>AbortPolicy：默认拒绝策略，新任务会被拒绝并抛出异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">throw</span> <span class="keyword">new</span> RejectedExecutionException(<span class="string">"Task "</span> + r.toString() +</span><br><span class="line">	<span class="string">" rejected from "</span> +</span><br><span class="line">	e.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DiscardPolicy：直接丢弃被拒绝的任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>DiscardOldestPolicy：如果执行程序尚未关闭，则位于工作队列头部的任务将被删除，然后重试执行程序（如果再次失败，则重复此过程）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!e.isShutdown()) &#123;</span><br><span class="line">    	e.getQueue().poll();</span><br><span class="line">    	e.execute(r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CallerRunsPolicy：交由调用者线程来执行任务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rejectedExecution</span><span class="params">(Runnable r, ThreadPoolExecutor e)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!e.isShutdown()) &#123;</span><br><span class="line">    	r.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2018/10/11/Mysql-按小时统计数据/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">Mysql-按小时统计数据</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+        <section id="comments"><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<div class="gitalk">
+    <div id="gitalk-container"></div>
+    <script type="text/javascript">
+        const gitalk = new Gitalk({
+            clientID: '33b6bc5887cd7c6d9dd4',
+            clientSecret: '7ba05c18114a1d462d63db900bc8d4392afb7748',
+            repo: 'changchangjie.github.io',
+            owner: 'changchangjie',
+            admin: ['changchangjie'],
+            id: "http://yoursite.com/2018/10/12/多线程-ThreadPoolExecutor用法/index.html".substr(19,50),      // Ensure uniqueness and length less than 50
+            distractionFreeMode: false  // Facebook-like distraction free mode
+        })
+
+        gitalk.render('gitalk-container')
+    </script>
+</div></section>
+    
+
+</section>
+	        
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+	    <span>changjie &copy; 2016-2018</span>
+            <span>|</span>
+            <span><a href="http://www.miitbeian.gov.cn" target="_blank">浙ICP备16041302号</a></span>
+        </div>
+    </div>
+</footer>
+        
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
