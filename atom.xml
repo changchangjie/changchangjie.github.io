@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-10-17T05:42:11.228Z</updated>
+  <updated>2018-10-17T06:01:54.746Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2018/10/17/Java%E5%9F%BA%E7%A1%80-Java%E4%B8%AD%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%BC%95%E7%94%A8%E7%9A%84%E7%90%86%E8%A7%A3/"/>
+    <id>http://yoursite.com/2018/10/17/Java基础-Java中对象和引用的理解/</id>
+    <published>2018-10-17T05:53:49.509Z</published>
+    <updated>2018-10-17T06:01:54.746Z</updated>
+    
+    <content type="html"><![CDATA[<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Animal an = <span class="keyword">new</span> Animal();</span><br></pre></td></tr></table></figure><p>创建一个对象，细化这个动作为:</p><ol><li>右面的”new Animal”，在堆空间里创建一个Animal对象</li><li>左面的”Animal an” 创建了一个Animal类的一个引用变量</li><li>“=” 操作符使对象引用指向刚才创建的那个Animal对象<br>等同于<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Animal an;</span><br><span class="line">an = <span class="keyword">new</span> Animal();</span><br></pre></td></tr></table></figure></li></ol><p>有两个实体：一个是对象引用变量；一个是对象本身<br><a id="more"></a></p><h3 id="对象和引用的区别"><a href="#对象和引用的区别" class="headerlink" title="对象和引用的区别"></a>对象和引用的区别</h3><ol><li>关联性： </li></ol><ul><li>当对象的引用变量指向对象时，两者就互相联系起来，改变引用的属性，就会改变对象的属性</li><li>如果同一个对象被多个引用变量引用的话，则这些引用变量将共同影响这个对象本身 </li><li>在java中，都是通过引用来操纵对象的</li></ul><ol start="2"><li>差异性： </li></ol><ul><li>一个对象可以被不同的引用变量来操纵，同时一个引用变量也可以指向不同的对象，但是同一时刻下只能指向一个对象</li><li>从存储空间上来看，对象和引用也是相互独立的，对象一般存储在堆中，而引用存储在堆栈中（存储速度而更快)</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Animal an = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Animal();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;创建一个对象，细化这个动作为:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;右面的”new Animal”，在堆空间里创建一个Animal对象&lt;/li&gt;
+&lt;li&gt;左面的”Animal an” 创建了一个Animal类的一个引用变量&lt;/li&gt;
+&lt;li&gt;“=” 操作符使对象引用指向刚才创建的那个Animal对象&lt;br&gt;等同于&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Animal an;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;an = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Animal();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;有两个实体：一个是对象引用变量；一个是对象本身&lt;br&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Java集合-Map之HashMap</title>
