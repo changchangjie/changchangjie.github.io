@@ -5,17 +5,17 @@
     
     <title>Java基础-Java中对象和引用的关系 | Changjie&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象等同于12Animal an;an = new Animal();   有两个实体：一个是对象引用变量；一个是对象本">
+    <meta name="description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java基础-Java中对象和引用的关系">
 <meta property="og:url" content="http://yoursite.com/2018/10/17/Java基础-Java中对象和引用的理解/index.html">
 <meta property="og:site_name" content="Changjie&#39;s blog">
-<meta property="og:description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象等同于12Animal an;an = new Animal();   有两个实体：一个是对象引用变量；一个是对象本">
+<meta property="og:description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-17T06:02:50.918Z">
+<meta property="og:updated_time" content="2018-10-19T05:50:59.866Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java基础-Java中对象和引用的关系">
-<meta name="twitter:description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象等同于12Animal an;an = new Animal();   有两个实体：一个是对象引用变量；一个是对象本">
+<meta name="twitter:description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象">
     
 
     
@@ -196,10 +196,11 @@
 <ol>
 <li>右面的”new Animal”，在堆空间里创建一个Animal对象</li>
 <li>左面的”Animal an” 创建了一个Animal类的一个引用变量</li>
-<li>“=” 操作符使对象引用指向刚才创建的那个Animal对象<br>等同于<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Animal an;</span><br><span class="line">an = <span class="keyword">new</span> Animal();</span><br></pre></td></tr></table></figure>
+<li>“=” 操作符使对象引用指向刚才创建的那个Animal对象<a id="more"></a>
+等同于<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Animal an;</span><br><span class="line">an = <span class="keyword">new</span> Animal();</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<p>有两个实体：一个是对象引用变量；一个是对象本身<br><a id="more"></a></p>
+<p>有两个实体：一个是对象引用变量；一个是对象本身<br><!--more--></p>
 <h3 id="对象和引用的区别"><a href="#对象和引用的区别" class="headerlink" title="对象和引用的区别"></a>对象和引用的区别</h3><ol>
 <li>关联性： </li>
 </ol>
@@ -233,6 +234,15 @@
     
         
 <nav id="article-nav">
+    
+        <a href="/2018/10/19/Spring-Spring Quartz和Task的区别/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Spring-Spring Quartz和Task的区别
+                
+            </div>
+        </a>
     
     
         <a href="/2018/10/12/Java集合-Map之HashMap/" id="article-nav-older" class="article-nav-link-wrap">

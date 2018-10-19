@@ -154,7 +154,7 @@
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                12
+                13
                 <span>文章</span>
             </div>
             <!-- <div class="article-info-block">
@@ -162,7 +162,7 @@
                 <span>标签</span>
             </div> -->
             <div class="article-info-block">
-                5
+                6
                 <span>分类</span>
             </div>
         </div>
@@ -209,6 +209,74 @@
             
             
             <section id="main">
+    <article id="post-Spring-Spring Quartz和Task的区别" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2018/10/19/Spring-Spring Quartz和Task的区别/">Spring-Spring Quartz和Task的区别</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fas fa-calendar-alt"></i>
+        <a href="/2018/10/19/Spring-Spring Quartz和Task的区别/">
+            <time datetime="2018-10-19T06:00:00.000Z" itemprop="datePublished">2018-10-19</time>
+        </a>
+    </div>
+
+
+                        
+    <div class="article-category">
+    	<i class="fas fa-folder"></i>
+        <a class="article-category-link" href="/categories/spring/">spring</a>
+    </div>
+
+                        
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            <p><p>目前比较常用的定时任务解决方案一般就是Spring Quartz和Task</p>
+<h3 id="spring-quartz"><a href="#spring-quartz" class="headerlink" title="spring-quartz"></a>spring-quartz</h3><p>spring-quartz只是spring对quartz的一个包装而已。其实现是在spring-context-support中</p>
+<ol>
+<li>特点</li>
+</ol>
+<ul>
+<li>默认多线程异步执行</li>
+<li>单个任务时，在上一个调度未完成时，下一个调度时间到时，会另起一个线程开始新的调度。业务繁忙时，一个任务会有多个调度，可能导致数据处理异常</li>
+<li>多个任务时，任务之间没有直接影响，多任务执行的快慢取决于CPU的性能</p>
+            <p class="article-more-link">
+                <a href="/2018/10/19/Spring-Spring Quartz和Task的区别/#more">查看更多</a>
+            </p>
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+            
+    
+
+        </footer>
+    </div>
+    
+</article>
+
+
+
     <article id="post-Java基础-Java中对象和引用的理解" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -251,10 +319,7 @@
 <ol>
 <li>右面的”new Animal”，在堆空间里创建一个Animal对象</li>
 <li>左面的”Animal an” 创建了一个Animal类的一个引用变量</li>
-<li>“=” 操作符使对象引用指向刚才创建的那个Animal对象<br>等同于<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Animal an;</span><br><span class="line">an = <span class="keyword">new</span> Animal();</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>有两个实体：一个是对象引用变量；一个是对象本身<br></p>
+<li>“=” 操作符使对象引用指向刚才创建的那个Animal对象</p>
             <p class="article-more-link">
                 <a href="/2018/10/17/Java基础-Java中对象和引用的理解/#more">查看更多</a>
             </p>
@@ -759,66 +824,6 @@
 
 
 
-    <article id="post-java只有值传递" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2018/10/09/java只有值传递/">Java基础-java只有值传递</a>
-        </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fas fa-calendar-alt"></i>
-        <a href="/2018/10/09/java只有值传递/">
-            <time datetime="2018-10-09T07:40:00.000Z" itemprop="datePublished">2018-10-09</time>
-        </a>
-    </div>
-
-
-                        
-    <div class="article-category">
-    	<i class="fas fa-folder"></i>
-        <a class="article-category-link" href="/categories/java基础/">java基础</a>
-    </div>
-
-                        
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            <p><p>Java程序设计语言总是采用按值调用。也就是说，方法得到的是所有参数值的一个拷贝，也就是说，方法不能修改传递给它的任何参数变量的内容<br></p>
-            <p class="article-more-link">
-                <a href="/2018/10/09/java只有值传递/#more">查看更多</a>
-            </p>
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-            
-    
-
-        </footer>
-    </div>
-    
-</article>
-
-
-
     <nav id="page-nav">
         <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
     </nav>
@@ -832,6 +837,24 @@
         <h3 class="widget-title">最新文章</h3>
         <div class="widget">
             <ul id="recent-post" class="">
+                
+                    <li>
+			            
+                        <!-- <div class="item-thumbnail">
+                            <a href="/2018/10/19/Spring-Spring Quartz和Task的区别/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div> -->
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/2018/10/19/Spring-Spring Quartz和Task的区别/" class="title">Spring-Spring Quartz和Task的区别</a></p>
+                            <p class="item-date"><time datetime="2018-10-19T06:00:00.000Z" itemprop="datePublished">2018-10-19</time></p>
+                        </div>
+                    </li>
                 
                     <li>
 			            
@@ -905,24 +928,6 @@
                         </div>
                     </li>
                 
-                    <li>
-			            
-                        <!-- <div class="item-thumbnail">
-                            <a href="/2018/10/10/Java集合-List之LinkedList/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div> -->
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/2018/10/10/Java集合-List之LinkedList/" class="title">Java集合-List之LinkedList</a></p>
-                            <p class="item-date"><time datetime="2018-10-10T11:10:00.000Z" itemprop="datePublished">2018-10-10</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -933,7 +938,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">分类</h3>
         <div class="widget">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java集合/">java集合</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/多线程/">多线程</a><span class="category-list-count">1</span></li></ul>
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java基础/">java基础</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/java集合/">java集合</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/spring/">spring</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/多线程/">多线程</a><span class="category-list-count">1</span></li></ul>
         </div>
     </div>
 
@@ -942,7 +947,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">归档</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
         </div>
     </div>
 
