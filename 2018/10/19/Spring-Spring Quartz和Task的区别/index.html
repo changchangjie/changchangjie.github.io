@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="Changjie&#39;s blog">
 <meta property="og:description" content="目前比较常用的定时任务解决方案一般就是Spring Quartz和Task spring-quartzspring-quartz只是spring对quartz的一个包装而已。其实现是在spring-context-support中  特点   默认多线程异步执行 单个任务时，在上一个调度未完成时，下一个调度时间到时，会另起一个线程开始新的调度。业务繁忙时，一个任务会有多个调度，可能导致数据处理异常">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-10-19T05:51:24.385Z">
+<meta property="og:updated_time" content="2018-10-19T05:54:56.033Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring-Spring Quartz和Task的区别">
 <meta name="twitter:description" content="目前比较常用的定时任务解决方案一般就是Spring Quartz和Task spring-quartzspring-quartz只是spring对quartz的一个包装而已。其实现是在spring-context-support中  特点   默认多线程异步执行 单个任务时，在上一个调度未完成时，下一个调度时间到时，会另起一个线程开始新的调度。业务繁忙时，一个任务会有多个调度，可能导致数据处理异常">
@@ -229,7 +229,7 @@
 <h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><p>易用性</p>
 <ul>
 <li>spring-quartz配置较复杂(任务、触发器、调度工厂)，但拥有spring-task所有的功能</li>
-<li>spring-task配置较简单，但是单线程同步，为了避免到点不执行，最好配置成线程池异步执行</li>
+<li>spring-task配置较简单，但是默认单线程同步，为了避免任务阻塞，最好配置成线程池异步执行</li>
 </ul>
 <p>异常处理</p>
 <ul>
