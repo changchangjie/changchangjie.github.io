@@ -12,12 +12,12 @@
 <meta property="og:site_name" content="Changjie&#39;s blog">
 <meta property="og:description" content="代理模式就是不直接对外提供其实现类，而是提供其代理类，隐藏实现类的细节，通常还用于在真实的实现的前后添加一部分逻辑">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://blog.csdn.net/danchu/article/details/70146985">
-<meta property="og:updated_time" content="2018-11-01T09:41:28.844Z">
+<meta property="og:image" content="https://img-blog.csdn.net/20170412201807733?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZGFuY2h1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-11-01T09:53:06.067Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="设计模式-代理模式">
 <meta name="twitter:description" content="代理模式就是不直接对外提供其实现类，而是提供其代理类，隐藏实现类的细节，通常还用于在真实的实现的前后添加一部分逻辑">
-<meta name="twitter:image" content="https://blog.csdn.net/danchu/article/details/70146985">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20170412201807733?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZGFuY2h1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
     
 
     
@@ -208,7 +208,7 @@
 <p>特点：</p>
 <ul>
 <li>类名：格式是“$ProxyN”，其中 N 是一个逐一递增的阿拉伯数字，代表 Proxy 类第 N 次生成的动态代理类，并不是每次调用 Proxy 的静态方法创建动态代理类都会使得 N 值增加，原因是如果对同一组接口（包括接口排列的顺序相同）试图重复创建动态代理类，它会很聪明地返回先前已经创建好的代理类的类对象，而不会再尝试去创建一个全新的代理类，这样可以节省不必要的代码重复生成，提高了代理类的创建效率</li>
-<li>类继承关系：Proxy 类是它的父类，这个规则适用于所有由 Proxy 创建的动态代理类。而且该类还实现了其所代理的一组接口<br><img src="https://blog.csdn.net/danchu/article/details/70146985" alt=""></li>
+<li>类继承关系：Proxy 类是它的父类，这个规则适用于所有由 Proxy 创建的动态代理类。而且该类还实现了其所代理的一组接口<br><img src="https://img-blog.csdn.net/20170412201807733?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZGFuY2h1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></li>
 </ul>
 <p>缺点：<br>Proxy只能对interface进行代理，无法实现对class的动态代理。观察动态生成的代理继承关系图可知原因，他们已经有一个固定的父类叫做Proxy，Java语法限定其不能再继承其他的父类</p>
 <ol start="2">
