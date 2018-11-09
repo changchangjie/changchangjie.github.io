@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-05T08:12:21.524Z</updated>
+  <updated>2018-11-09T06:21:08.724Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mysql-key_len的计算</title>
+    <link href="http://yoursite.com/2018/11/09/Mysql-key_len%E7%9A%84%E8%AE%A1%E7%AE%97/"/>
+    <id>http://yoursite.com/2018/11/09/Mysql-key_len的计算/</id>
+    <published>2018-11-09T03:00:00.000Z</published>
+    <updated>2018-11-09T06:21:08.724Z</updated>
+    
+    <content type="html"><![CDATA[<p>当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引<br><a id="more"></a></p><h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> student (</span><br><span class="line">  <span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) AUTO_INCREMENT primary <span class="keyword">key</span> ,</span><br><span class="line">  <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  cid <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  created <span class="keyword">timestamp</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br></pre></td></tr></table></figure><h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">drop</span> <span class="keyword">index</span> index_name_cid_created;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">index</span> index_name_cid_created (<span class="keyword">name</span>, cid, created);</span><br></pre></td></tr></table></figure><h3 id="执行计划"><a href="#执行计划" class="headerlink" title="执行计划"></a>执行计划</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">'aaaa'</span> <span class="keyword">and</span> cid = <span class="number">1</span> <span class="keyword">and</span> created &gt; <span class="string">'2018-11-11 11:11:11'</span>;</span><br></pre></td></tr></table></figure><h3 id="MySQL-字段类型占用空间"><a href="#MySQL-字段类型占用空间" class="headerlink" title="MySQL 字段类型占用空间"></a>MySQL 字段类型占用空间</h3><p>常用类型存储需求<br><a href="https://blog.csdn.net/free_ant/article/details/52936722" target="_blank" rel="noopener">完整对应链接</a></p><table><thead><tr><th>类型</th><th style="text-align:right">存储空间</th></tr></thead><tbody><tr><td>TINYINT</td><td style="text-align:right">1个字节</td></tr><tr><td>SMALLINT</td><td style="text-align:right">2个字节</td></tr><tr><td>INT, INTEGER</td><td style="text-align:right">4个字节</td></tr><tr><td>BIGINT</td><td style="text-align:right">8个字节</td></tr><tr><td>DATE</td><td style="text-align:right">3个字节</td></tr><tr><td>DATETIME</td><td style="text-align:right">8个字节</td></tr><tr><td>TIMESTAMP</td><td style="text-align:right">4个字节</td></tr><tr><td>CHAR(M)</td><td style="text-align:right">M个字节，0 &lt;= M &lt;= 255</td></tr><tr><td>VARCHAR(M)</td><td style="text-align:right">2+3M，0 &lt;= M &lt;= 65535</td></tr></tbody></table><blockquote><p>int（10）这里的10指的是数值的宽度，并不是字节<br>char(20)、varchar(20)，20指的是字符而不是字节（4.0版本以上，以下指的是字节）<br>字符和字节的转换要看字符集，utf-8下，1字符=3字节；gbk下，1字符=2字节</p></blockquote><h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p><img src="https://static.changjie.me/img/WX20181109-111215.png" alt=""></p><p>此时索引长度是42个字节<br>由于表的字符集是utf8,  1char=3byte，10 * 3=30<br>由于varchar是变长类型，需要额外的2个字节，固定长度字段(char,int)不需要额外的字节<br>由于字段默认为null，所以需要1个字节的额外空间<br>(30 + 2 + 1) + (4 + 1) + 4 = 42</p><h3 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h3><p>对于联合索引mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Mysql" scheme="http://yoursite.com/categories/Mysql/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>徒手撸框架-实现IOC</title>
