@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-09T06:21:08.724Z</updated>
+  <updated>2018-11-09T07:00:36.192Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Mysql-存储过程生成测试数据</title>
+    <link href="http://yoursite.com/2018/11/09/Mysql-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE/"/>
+    <id>http://yoursite.com/2018/11/09/Mysql-存储过程生成测试数据/</id>
+    <published>2018-11-09T07:00:00.000Z</published>
+    <updated>2018-11-09T07:00:36.192Z</updated>
+    
+    <content type="html"><![CDATA[<p>在进行查询操作的性能测试时，往往需要测试大数据量模式下的查询功能的性能<br>MySQL表数据量的大小，也会影响索引的选择<br><a id="more"></a></p><h3 id="随机函数"><a href="#随机函数" class="headerlink" title="随机函数"></a>随机函数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DEFINER=<span class="string">`root`</span>@<span class="string">`%`</span> <span class="keyword">FUNCTION</span> <span class="string">`rand_string`</span>(n <span class="built_in">INT</span>) <span class="keyword">RETURNS</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">CHARSET</span> utf8mb4</span><br><span class="line">    <span class="keyword">DETERMINISTIC</span></span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">DECLARE</span> chars_str <span class="built_in">varchar</span>(<span class="number">100</span>) <span class="keyword">DEFAULT</span> <span class="string">'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'</span>;</span><br><span class="line">    <span class="keyword">DECLARE</span> return_str <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="string">''</span> ;</span><br><span class="line">    <span class="keyword">DECLARE</span> i <span class="built_in">INT</span> <span class="keyword">DEFAULT</span> <span class="number">0</span>;</span><br><span class="line">    WHILE i &lt; n DO</span><br><span class="line">        <span class="keyword">SET</span> return_str = <span class="keyword">concat</span>(return_str, <span class="keyword">substring</span>(chars_str, <span class="keyword">FLOOR</span>(<span class="number">1</span> + <span class="keyword">RAND</span>() * <span class="number">62</span>), <span class="number">1</span>));</span><br><span class="line">        <span class="keyword">SET</span> i = i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">WHILE</span>;</span><br><span class="line">    RETURN return_str;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure><p>函数说明<br>rand()：用于生成[0,1)之间的随机数<br>substring(str,pos,len)：从字符串第pos个字符开始，截取len个字符<br>concat(str1,str2)：用于字符串拼接<br>可知上面函数是生成指定位数的字符串</p><h3 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DEFINER=<span class="string">`root`</span>@<span class="string">`%`</span> <span class="keyword">PROCEDURE</span> <span class="string">`insert_student`</span>(<span class="keyword">IN</span> n <span class="built_in">int</span>)</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">DECLARE</span> i <span class="built_in">INT</span> <span class="keyword">DEFAULT</span> <span class="number">1</span>;</span><br><span class="line">    WHILE (i &lt;= n) DO</span><br><span class="line">        <span class="keyword">INSERT</span> <span class="keyword">INTO</span> student (<span class="keyword">name</span>, cid) <span class="keyword">VALUES</span> (rand_string(<span class="number">8</span>), <span class="keyword">FLOOR</span>(<span class="keyword">RAND</span>() * <span class="number">100</span>));</span><br><span class="line">        <span class="keyword">SET</span> i = i + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">END</span> <span class="keyword">WHILE</span>;</span><br><span class="line"><span class="keyword">END</span>;</span><br></pre></td></tr></table></figure><p>用rand_string函数给name字段生成8位随机字符串，cid字段为[0,100)的整数，随机插入指定条</p><h3 id="运行存储过程"><a href="#运行存储过程" class="headerlink" title="运行存储过程"></a>运行存储过程</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CALL insert_student(1000000);</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在进行查询操作的性能测试时，往往需要测试大数据量模式下的查询功能的性能&lt;br&gt;MySQL表数据量的大小，也会影响索引的选择&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Mysql" scheme="http://yoursite.com/categories/Mysql/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Mysql-key_len的计算</title>
@@ -272,8 +292,8 @@
   
   <entry>
     <title>Java基础-static关键字</title>
-    <link href="http://yoursite.com/2018/10/10/static%E5%85%B3%E9%94%AE%E5%AD%97/"/>
-    <id>http://yoursite.com/2018/10/10/static关键字/</id>
+    <link href="http://yoursite.com/2018/10/10/Java%E5%9F%BA%E7%A1%80-static%E5%85%B3%E9%94%AE%E5%AD%97/"/>
+    <id>http://yoursite.com/2018/10/10/Java基础-static关键字/</id>
     <published>2018-10-10T03:10:00.000Z</published>
     <updated>2018-10-10T03:30:42.785Z</updated>
     
@@ -293,8 +313,8 @@
   
   <entry>
     <title>Java基础-内部类中调用外部局部变量为何用final修饰</title>
-    <link href="http://yoursite.com/2018/10/10/%E5%86%85%E9%83%A8%E7%B1%BB%E8%B0%83%E7%94%A8%E5%B1%80%E9%83%A8%E5%8F%82%E6%95%B0%E4%B8%BA%E4%BD%95%E7%94%A8final%E5%85%B3%E9%94%AE%E5%AD%97/"/>
-    <id>http://yoursite.com/2018/10/10/内部类调用局部参数为何用final关键字/</id>
+    <link href="http://yoursite.com/2018/10/10/Java%E5%9F%BA%E7%A1%80-%E5%86%85%E9%83%A8%E7%B1%BB%E8%B0%83%E7%94%A8%E5%B1%80%E9%83%A8%E5%8F%82%E6%95%B0%E4%B8%BA%E4%BD%95%E7%94%A8final%E5%85%B3%E9%94%AE%E5%AD%97/"/>
+    <id>http://yoursite.com/2018/10/10/Java基础-内部类调用局部参数为何用final关键字/</id>
     <published>2018-10-10T02:45:00.000Z</published>
     <updated>2018-10-10T02:39:31.487Z</updated>
     
@@ -313,8 +333,8 @@
   
   <entry>
     <title>Java基础-servlet与jsp</title>
-    <link href="http://yoursite.com/2018/10/09/servlet%E4%B8%8Ejsp/"/>
-    <id>http://yoursite.com/2018/10/09/servlet与jsp/</id>
+    <link href="http://yoursite.com/2018/10/09/Java%E5%9F%BA%E7%A1%80-servlet%E4%B8%8Ejsp/"/>
+    <id>http://yoursite.com/2018/10/09/Java基础-servlet与jsp/</id>
     <published>2018-10-09T09:00:00.000Z</published>
     <updated>2018-10-09T09:55:17.561Z</updated>
     
@@ -333,10 +353,10 @@
   
   <entry>
     <title>Java基础-java只有值传递</title>
-    <link href="http://yoursite.com/2018/10/09/java%E5%8F%AA%E6%9C%89%E5%80%BC%E4%BC%A0%E9%80%92/"/>
-    <id>http://yoursite.com/2018/10/09/java只有值传递/</id>
+    <link href="http://yoursite.com/2018/10/09/Java%E5%9F%BA%E7%A1%80-java%E5%8F%AA%E6%9C%89%E5%80%BC%E4%BC%A0%E9%80%92/"/>
+    <id>http://yoursite.com/2018/10/09/Java基础-java只有值传递/</id>
     <published>2018-10-09T07:40:00.000Z</published>
-    <updated>2018-10-09T08:02:48.559Z</updated>
+    <updated>2018-10-09T08:28:40.752Z</updated>
     
     <content type="html"><![CDATA[<p>Java程序设计语言总是采用按值调用。也就是说，方法得到的是所有参数值的一个拷贝，也就是说，方法不能修改传递给它的任何参数变量的内容<br><a id="more"></a></p><h3 id="example1"><a href="#example1" class="headerlink" title="example1"></a>example1</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num1 = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> num2 = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    swap(num1, num2);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"num1 = "</span> + num1);</span><br><span class="line">    System.out.println(<span class="string">"num2 = "</span> + num2);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp = a;</span><br><span class="line">    a = b;</span><br><span class="line">    b = temp;</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"a = "</span> + a);</span><br><span class="line">    System.out.println(<span class="string">"b = "</span> + b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">20</span></span><br><span class="line">b = <span class="number">10</span></span><br><span class="line">num1 = <span class="number">10</span></span><br><span class="line">num2 = <span class="number">20</span></span><br></pre></td></tr></table></figure><p>解析<br><img src="https://camo.githubusercontent.com/ab46506b1a5ce09a516051c35f981e55255337f9/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f32323139313334382e6a7067" alt="解析"><br>在swap方法中，a、b的值进行交换，并不会影响到 num1、num2。因为，a、b中的值，只是从 num1、num2 的复制过来的。也就是说，a、b相当于num1、num2 的副本，副本的内容无论怎么修改，都不会影响到原件本身</p><p>一个方法不能修改一个基本数据类型的参数，而对象引用作为参数就不一样</p><h3 id="example2"><a href="#example2" class="headerlink" title="example2"></a>example2</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span>[] arr = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125;;</span><br><span class="line">    System.out.println(arr[<span class="number">0</span>]);</span><br><span class="line">    change(arr);</span><br><span class="line">    System.out.println(arr[<span class="number">0</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">change</span><span class="params">(<span class="keyword">int</span>[] array)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 将数组的第一个元素变为0</span></span><br><span class="line">    array[<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure><p>解析<br><img src="https://camo.githubusercontent.com/b7bad9506150c29bb8d7debd3905bd7a71cd6611/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f333832353230342e6a7067" alt="解析"><br>array 和 arr 指向的时同一个数组对象。 因此，外部对引用对象的改变会反映到所对应的对象上。</p><h3 id="example3"><a href="#example3" class="headerlink" title="example3"></a>example3</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Student s1 = <span class="keyword">new</span> Student(<span class="string">"小张"</span>);</span><br><span class="line">    Student s2 = <span class="keyword">new</span> Student(<span class="string">"小李"</span>);</span><br><span class="line">    swap(s1, s2);</span><br><span class="line">    System.out.println(<span class="string">"s1:"</span> + s1.getName());</span><br><span class="line">    System.out.println(<span class="string">"s2:"</span> + s2.getName());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(Student x, Student y)</span> </span>&#123;</span><br><span class="line">    Student temp = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = temp;</span><br><span class="line">    System.out.println(<span class="string">"x:"</span> + x.getName());</span><br><span class="line">    System.out.println(<span class="string">"y:"</span> + y.getName());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x:小李</span><br><span class="line">y:小张</span><br><span class="line">s1:小张</span><br><span class="line">s2:小李</span><br></pre></td></tr></table></figure><p>解析<br><img src="https://camo.githubusercontent.com/9d6dd0313695d309280675cd3251b47432a28814/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f38383732393831382e6a7067" alt="交换前"><br>交换前s1和其副本x指向同一个元素，s2和y指向的是同一个元素<br><img src="https://camo.githubusercontent.com/6bea9b0ed65609d699207ab787f631f7ba0a9246/687474703a2f2f6d792d626c6f672d746f2d7573652e6f73732d636e2d6265696a696e672e616c6979756e63732e636f6d2f31382d392d32372f33343338343431342e6a7067" alt="交换后"><br>交换后s1指针没变，其副本x指针变了，s2指针没变，其副本y指针变了<br>其实交换的其两个副本的指针，原对象指针不受影响</p><h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><blockquote><p><a href="https://github.com/Snailclimb/JavaGuide/blob/master/%E9%9D%A2%E8%AF%95%E5%BF%85%E5%A4%87/%E6%9C%80%E6%9C%80%E6%9C%80%E5%B8%B8%E8%A7%81%E7%9A%84Java%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/%E7%AC%AC%E4%B8%80%E5%91%A8%EF%BC%882018-8-7%EF%BC%89.md" target="_blank" rel="noopener">为什么 Java 中只有值传递</a>  </p></blockquote>]]></content>
     
@@ -353,8 +373,8 @@
   
   <entry>
     <title>Java基础-equals与hashcode</title>
-    <link href="http://yoursite.com/2018/10/09/equals%E4%B8%8Ehashcode/"/>
-    <id>http://yoursite.com/2018/10/09/equals与hashcode/</id>
+    <link href="http://yoursite.com/2018/10/09/Java%E5%9F%BA%E7%A1%80-equals%E4%B8%8Ehashcode/"/>
+    <id>http://yoursite.com/2018/10/09/Java基础-equals与hashcode/</id>
     <published>2018-10-09T07:00:00.000Z</published>
     <updated>2018-10-09T07:27:27.209Z</updated>
     
@@ -374,8 +394,8 @@
   
   <entry>
     <title>Java基础-Transient关键字的使用</title>
-    <link href="http://yoursite.com/2018/09/30/transient%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
-    <id>http://yoursite.com/2018/09/30/transient的作用与使用/</id>
+    <link href="http://yoursite.com/2018/09/30/Java%E5%9F%BA%E7%A1%80-transient%E7%9A%84%E4%BD%9C%E7%94%A8%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yoursite.com/2018/09/30/Java基础-transient的作用与使用/</id>
     <published>2018-09-30T04:12:57.000Z</published>
     <updated>2018-10-09T07:25:58.773Z</updated>
     
