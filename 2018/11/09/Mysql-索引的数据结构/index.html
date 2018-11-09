@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Mysql-key_len的计算 | Changjie&#39;s blog</title>
+    <title>Mysql-索引的数据结构 | Changjie&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引">
+    <meta name="description" content="索引能够使每次查找数据时把磁盘IO次数控制在一个很小的数量级Mysql索引的数据结构是b+树">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Mysql-key_len的计算">
-<meta property="og:url" content="http://yoursite.com/2018/11/09/Mysql-key_len的计算/index.html">
+<meta property="og:title" content="Mysql-索引的数据结构">
+<meta property="og:url" content="http://yoursite.com/2018/11/09/Mysql-索引的数据结构/index.html">
 <meta property="og:site_name" content="Changjie&#39;s blog">
-<meta property="og:description" content="当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引">
+<meta property="og:description" content="索引能够使每次查找数据时把磁盘IO次数控制在一个很小的数量级Mysql索引的数据结构是b+树">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://static.changjie.me/img/WX20181109-111215.png">
-<meta property="og:updated_time" content="2018-11-09T08:42:37.464Z">
+<meta property="og:image" content="https://tech.meituan.com/img/mysql_index/btree.jpg">
+<meta property="og:updated_time" content="2018-11-09T09:00:48.223Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Mysql-key_len的计算">
-<meta name="twitter:description" content="当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引">
-<meta name="twitter:image" content="https://static.changjie.me/img/WX20181109-111215.png">
+<meta name="twitter:title" content="Mysql-索引的数据结构">
+<meta name="twitter:description" content="索引能够使每次查找数据时把磁盘IO次数控制在一个很小的数量级Mysql索引的数据结构是b+树">
+<meta name="twitter:image" content="https://tech.meituan.com/img/mysql_index/btree.jpg">
     
 
     
@@ -155,7 +155,7 @@
                 document.querySelector('style').textContent += "@media screen and (max-width: 1199px) and (min-width: 800px) { #main {margin: auto; width: 70%; display: block; float:none;}}"
                 </script>
             
-            <section id="main"><article id="post-Mysql-key_len的计算" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Mysql-索引的数据结构" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -163,7 +163,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Mysql-key_len的计算
+            Mysql-索引的数据结构
         </h1>
     
 
@@ -172,8 +172,8 @@
                         
     <div class="article-date">
         <i class="fas fa-calendar-alt"></i>
-        <a href="/2018/11/09/Mysql-key_len的计算/">
-            <time datetime="2018-11-09T03:00:00.000Z" itemprop="datePublished">2018-11-09</time>
+        <a href="/2018/11/09/Mysql-索引的数据结构/">
+            <time datetime="2018-11-09T09:00:00.000Z" itemprop="datePublished">2018-11-09</time>
         </a>
     </div>
 
@@ -193,63 +193,13 @@
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引<br><a id="more"></a></p>
-<h3 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> student (</span><br><span class="line">  <span class="keyword">id</span> <span class="built_in">int</span>(<span class="number">11</span>) AUTO_INCREMENT primary <span class="keyword">key</span> ,</span><br><span class="line">  <span class="keyword">name</span> <span class="built_in">varchar</span>(<span class="number">10</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  cid <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  created <span class="keyword">timestamp</span></span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br></pre></td></tr></table></figure>
-<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">drop</span> <span class="keyword">index</span> index_name_cid_created;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> student <span class="keyword">add</span> <span class="keyword">index</span> index_name_cid_created (<span class="keyword">name</span>, cid, created);</span><br></pre></td></tr></table></figure>
-<h3 id="执行计划"><a href="#执行计划" class="headerlink" title="执行计划"></a>执行计划</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">EXPLAIN</span> <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> <span class="keyword">name</span> = <span class="string">'aaaa'</span> <span class="keyword">and</span> cid = <span class="number">1</span> <span class="keyword">and</span> created &gt; <span class="string">'2018-11-11 11:11:11'</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="MySQL-字段类型占用空间"><a href="#MySQL-字段类型占用空间" class="headerlink" title="MySQL 字段类型占用空间"></a>MySQL 字段类型占用空间</h3><p>常用类型存储需求<br><a href="https://blog.csdn.net/free_ant/article/details/52936722" target="_blank" rel="noopener">完整对应链接</a></p>
-<table>
-<thead>
-<tr>
-<th>类型</th>
-<th style="text-align:right">存储空间</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TINYINT</td>
-<td style="text-align:right">1个字节</td>
-</tr>
-<tr>
-<td>SMALLINT</td>
-<td style="text-align:right">2个字节</td>
-</tr>
-<tr>
-<td>INT, INTEGER</td>
-<td style="text-align:right">4个字节</td>
-</tr>
-<tr>
-<td>BIGINT</td>
-<td style="text-align:right">8个字节</td>
-</tr>
-<tr>
-<td>DATE</td>
-<td style="text-align:right">3个字节</td>
-</tr>
-<tr>
-<td>DATETIME</td>
-<td style="text-align:right">8个字节</td>
-</tr>
-<tr>
-<td>TIMESTAMP</td>
-<td style="text-align:right">4个字节</td>
-</tr>
-<tr>
-<td>CHAR(M)</td>
-<td style="text-align:right">M个字节，0 &lt;= M &lt;= 255</td>
-</tr>
-<tr>
-<td>VARCHAR(M)</td>
-<td style="text-align:right">2+3M，0 &lt;= M &lt;= 65535</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>int（10）这里的10指的是数值的宽度，并不是字节数，如果使用了zerofill，当结果小于显示宽度时，左边用0补齐，当等于或超过显示宽度时正常显示，没啥用<br>char(20)、varchar(20)，20指的是字符而不是字节（4.0版本以上，以下指的是字节）<br>字符和字节的转换要看字符集，utf-8下，1字符=3字节；gbk下，1字符=2字节</p>
+            <p>索引能够使每次查找数据时把磁盘IO次数控制在一个很小的数量级<br>Mysql索引的数据结构是b+树<br><a id="more"></a></p>
+<h3 id="b-树的数据结构"><a href="#b-树的数据结构" class="headerlink" title="b+树的数据结构"></a>b+树的数据结构</h3><p><img src="https://tech.meituan.com/img/mysql_index/btree.jpg" alt=""><br>浅蓝色的块我们称之为一个磁盘块，可以看到每个磁盘块包含几个数据项（深蓝色所示）和指针（黄色所示），如磁盘块1包含数据项17和35，包含指针P1、P2、P3，P1表示小于17的磁盘块，P2表示在17和35之间的磁盘块，P3表示大于35的磁盘块。真实的数据存在于叶子节点即3、5、9、10、13、15、28、29、36、60、75、79、90、99。非叶子节点只不存储真实的数据，只存储指引搜索方向的数据项，如17、35并不真实存在于数据表中</p>
+<h3 id="b-树的查找过程"><a href="#b-树的查找过程" class="headerlink" title="b+树的查找过程"></a>b+树的查找过程</h3><p>如图所示，如果要查找数据项29，那么首先会把磁盘块1由磁盘加载到内存，此时发生一次IO，在内存中用二分查找确定29在17和35之间，锁定磁盘块1的P2指针，内存时间因为非常短（相比磁盘的IO）可以忽略不计，通过磁盘块1的P2指针的磁盘地址把磁盘块3由磁盘加载到内存，发生第二次IO，29在26和30之间，锁定磁盘块3的P2指针，通过指针加载磁盘块8到内存，发生第三次IO，同时内存中做二分查找找到29，结束查询，总计三次IO。真实的情况是，3层的b+树可以表示上百万的数据，如果上百万的数据查找只需要三次IO，性能提高将是巨大的，如果没有索引，每个数据项都要发生一次IO，那么总共需要百万次的IO，显然成本非常非常高</p>
+<h3 id="b-树性质"><a href="#b-树性质" class="headerlink" title="b+树性质"></a>b+树性质</h3><p>通过上面的分析，我们知道磁盘IO次数取决于b+数的高度h，树高越低磁盘IO越少<br>在数据量一定的情况下，为了使树高越低，需要使每个磁盘块存储的数据量越多，<br>而磁盘块的大小也就是一个数据页的大小，是固定的，为了使存储的数据量越多，则需要使索引字段数据项所占的空间越少，所以需要控制字段类型</p>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><blockquote>
+<p><a href="https://tech.meituan.com/mysql_index.html" target="_blank" rel="noopener">MySQL索引原理及慢查询优化</a><br><a href="https://juejin.im/entry/590a973561ff4b00698921b8" target="_blank" rel="noopener">MySQL 索引及查询优化总结</a></p>
 </blockquote>
-<h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p><img src="https://static.changjie.me/img/WX20181109-111215.png" alt=""></p>
-<p>此时索引长度是42个字节<br>由于表的字符集是utf8,  1char=3byte，10 * 3=30<br>由于varchar是变长类型，需要额外的2个字节，固定长度字段(char,int)不需要额外的字节<br>由于字段默认为null，所以需要1个字节的额外空间<br>(30 + 2 + 1) + (4 + 1) + 4 = 42</p>
-<h3 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h3><p>对于联合索引mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整</p>
 
         
         </div>
@@ -269,19 +219,10 @@
         
 <nav id="article-nav">
     
-        <a href="/2018/11/09/Mysql-存储过程生成测试数据/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    Mysql-存储过程生成测试数据
-                
-            </div>
-        </a>
     
-    
-        <a href="/2018/11/02/徒手撸框架-实现IOC/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/2018/11/09/Mysql-引号对索引的影响/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">徒手撸框架-实现IOC</div>
+            <div class="article-nav-title">Mysql-引号对索引的影响</div>
         </a>
     
 </nav>
@@ -304,7 +245,7 @@
             repo: 'changchangjie.github.io',
             owner: 'changchangjie',
             admin: ['changchangjie'],
-            id: "http://yoursite.com/2018/11/09/Mysql-key_len的计算/index.html".substr(19,50),      // Ensure uniqueness and length less than 50
+            id: "http://yoursite.com/2018/11/09/Mysql-索引的数据结构/index.html".substr(19,50),      // Ensure uniqueness and length less than 50
             distractionFreeMode: false  // Facebook-like distraction free mode
         })
 
