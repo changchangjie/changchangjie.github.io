@@ -2,22 +2,26 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>标签 - ChangJie&#39;s blog</title>
+<title>Mysql-按小时统计数据 - ChangJie&#39;s blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="ChangJie&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+    <meta name="description" content="Mysql统计一天中每小时数据量sql如下1234567select created, count(created)from (       select DATE_FORMAT( created ,&apos;%Y-%m-%d %H&apos;) created        from shop_check_result        where created &amp;gt; &apos;2018-10-08 00:00:00&apos;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql-按小时统计数据">
+<meta property="og:url" content="http://yoursite.com/2018/10/11/Mysql-按小时统计数据/index.html">
 <meta property="og:site_name" content="ChangJie&#39;s blog">
+<meta property="og:description" content="Mysql统计一天中每小时数据量sql如下1234567select created, count(created)from (       select DATE_FORMAT( created ,&apos;%Y-%m-%d %H&apos;) created        from shop_check_result        where created &amp;gt; &apos;2018-10-08 00:00:00&apos;">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-01-07T10:12:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ChangJie&#39;s blog">
+<meta name="twitter:title" content="Mysql-按小时统计数据">
+<meta name="twitter:description" content="Mysql统计一天中每小时数据量sql如下1234567select created, count(created)from (       select DATE_FORMAT( created ,&apos;%Y-%m-%d %H&apos;) created        from shop_check_result        where created &amp;gt; &apos;2018-10-08 00:00:00&apos;">
 
 
 
-<link rel="alternative" href="https://changjie.me/atom.xml" title="ChangJie&#39;s blog" type="application/atom+xml">
+<link rel="alternative" href="https://changjie.me/atom.xml" title="Mysql-按小时统计数据" type="application/atom+xml">
 
 
 
@@ -85,7 +89,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="ChangJie&#39;s blog" height="28">
+                <img src="/images/logo.png" alt="Mysql-按小时统计数据" height="28">
             
             </a>
         </div>
@@ -99,7 +103,7 @@
                 
                 <a class="navbar-item" href="/categories">Categories</a>
                 
-                <a class="navbar-item is-active" href="/tags">Tags</a>
+                <a class="navbar-item" href="/tags">Tags</a>
                 
                 <a class="navbar-item" href="/about">About</a>
                 
@@ -122,18 +126,70 @@
         <div class="container">
             <!--<div class="columns">-->
                 
-                    <div class="column has-order-2 column-main" style="display: block;width: 70%;margin: auto;float: none"><div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                标签
-            </h3>
-            <ul class="menu-list">
+                    <div class="column has-order-2 column-main" style="display: block;width: 70%;margin: auto;float: none"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-10-11T09:00:00.000Z">2018-10-11</time>
                 
-            </ul>
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Mysql/">Mysql</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    几秒 读完 (大约 43 个字)
+                </span>
+                
+            </div>
         </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Mysql-按小时统计数据
+            
+        </h1>
+        <div class="content">
+            <p>Mysql统计一天中每小时数据量sql如下<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> created, <span class="hljs-keyword">count</span>(created)</span><br><span class="line"><span class="hljs-keyword">from</span> (</span><br><span class="line">       <span class="hljs-keyword">select</span> <span class="hljs-keyword">DATE_FORMAT</span>( created ,<span class="hljs-string">'%Y-%m-%d %H'</span>) created </span><br><span class="line">       <span class="hljs-keyword">from</span> shop_check_result </span><br><span class="line">       <span class="hljs-keyword">where</span> created &gt; <span class="hljs-string">'2018-10-08 00:00:00'</span> <span class="hljs-keyword">and</span> created &lt; <span class="hljs-string">'2018-10-09 00:00:00'</span> </span><br><span class="line">     ) a</span><br><span class="line"><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> created;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+        </div>
+        
+        
+        
     </div>
-</div></div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/10/12/多线程-ThreadPoolExecutor用法/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">多线程-ThreadPoolExecutor用法</span>
+            </a>
+        </div>
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2018/10/10/Java集合-List之LinkedList/">
+                <span class="level-item">Java集合-List之LinkedList</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
                 
             <!--</div>-->
         </div>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Java基础-Transient关键字的使用 - ChangJie&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="transient的使用对象实现了序列化接口时，这个类所有属性和方法都可以序列化和被反序列化，当我们不想序列化某些属性时，使用transient修饰这些属性即可，比如对于一些敏感信息(密码，银行卡号等)不希望在网络中传输">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础-Transient关键字的使用">
+<meta property="og:url" content="http://yoursite.com/2018/09/30/Java基础-transient的作用与使用/index.html">
+<meta property="og:site_name" content="ChangJie&#39;s blog">
+<meta property="og:description" content="transient的使用对象实现了序列化接口时，这个类所有属性和方法都可以序列化和被反序列化，当我们不想序列化某些属性时，使用transient修饰这些属性即可，比如对于一些敏感信息(密码，银行卡号等)不希望在网络中传输">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-01-07T10:12:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基础-Transient关键字的使用">
+<meta name="twitter:description" content="transient的使用对象实现了序列化接口时，这个类所有属性和方法都可以序列化和被反序列化，当我们不想序列化某些属性时，使用transient修饰这些属性即可，比如对于一些敏感信息(密码，银行卡号等)不希望在网络中传输">
+
+
+
+<link rel="alternative" href="https://changjie.me/atom.xml" title="Java基础-Transient关键字的使用" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="Java基础-Transient关键字的使用" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <!--<div class="columns">-->
+                
+                    <div class="column has-order-2 column-main" style="display: block;width: 70%;margin: auto;float: none"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-09-30T04:12:57.000Z">2018-09-30</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/java基础/">java基础</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    8 分钟 读完 (大约 1181 个字)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Java基础-Transient关键字的使用
+            
+        </h1>
+        <div class="content">
+            <h3 id="transient的使用"><a href="#transient的使用" class="headerlink" title="transient的使用"></a>transient的使用</h3><p>对象实现了序列化接口时，这个类所有属性和方法都可以序列化和被反序列化，当我们不想序列化某些属性时，使用transient修饰这些属性即可，比如对于一些敏感信息(密码，银行卡号等)不希望在网络中传输<br><a id="more"></a></p>
+<h4 id="传统序列化"><a href="#传统序列化" class="headerlink" title="传统序列化"></a>传统序列化</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TransientTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Serializable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">private</span> String password;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getUsername</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> username;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setUsername</span><span class="hljs-params">(String username)</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">this</span>.username = username;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getPassword</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> password;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPassword</span><span class="hljs-params">(String password)</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">this</span>.password = password;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;</span><br><span class="line">        User user = <span class="hljs-keyword">new</span> User();</span><br><span class="line">        user.setUsername(<span class="hljs-string">"chang"</span>);</span><br><span class="line">        user.setPassword(<span class="hljs-string">"123456"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="hljs-string">"read before Serializable: "</span>);</span><br><span class="line">        System.out.println(<span class="hljs-string">"username: "</span> + user.getUsername());</span><br><span class="line">        System.out.println(<span class="hljs-string">"password: "</span> + user.getPassword());</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">            ObjectOutputStream os = <span class="hljs-keyword">new</span> ObjectOutputStream(</span><br><span class="line">                    <span class="hljs-keyword">new</span> FileOutputStream(<span class="hljs-string">"/Users/admin/Desktop/user.txt"</span>));</span><br><span class="line">            os.writeObject(user); <span class="hljs-comment">// 将User对象写进文件</span></span><br><span class="line">            os.flush();</span><br><span class="line">            os.close();</span><br><span class="line">        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">            ObjectInputStream is = <span class="hljs-keyword">new</span> ObjectInputStream(<span class="hljs-keyword">new</span> FileInputStream(</span><br><span class="line">                    <span class="hljs-string">"/Users/admin/Desktop/user.txt"</span>));</span><br><span class="line">            user = (User) is.readObject(); <span class="hljs-comment">// 从流中读取User的数据</span></span><br><span class="line">            is.close();</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="hljs-string">"\nread after Serializable: "</span>);</span><br><span class="line">            System.out.println(<span class="hljs-string">"username: "</span> + user.getUsername());</span><br><span class="line">            System.out.println(<span class="hljs-string">"password: "</span> + user.getPassword());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">read before Serializable: </span><br><span class="line">username: chang</span><br><span class="line">password: <span class="hljs-number">123456</span></span><br><span class="line"></span><br><span class="line">read after Serializable: </span><br><span class="line">username: chang</span><br><span class="line">password: <span class="hljs-number">123456</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="使用transient修饰不想被序列化的字段"><a href="#使用transient修饰不想被序列化的字段" class="headerlink" title="使用transient修饰不想被序列化的字段"></a>使用transient修饰不想被序列化的字段</h4><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> String password;</span><br></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">read before Serializable: </span><br><span class="line">username: chang</span><br><span class="line">password: <span class="hljs-number">123456</span></span><br><span class="line"></span><br><span class="line">read after Serializable: </span><br><span class="line">username: chang</span><br><span class="line">password: <span class="hljs-keyword">null</span></span><br></pre></td></tr></table></figure></p>
+<p>密码字段为null，说明反序列化时根本没有从文件中获取到信息</p>
+<h3 id="静态变量不管是否被transient修饰，均不能被序列化"><a href="#静态变量不管是否被transient修饰，均不能被序列化" class="headerlink" title="静态变量不管是否被transient修饰，均不能被序列化"></a>静态变量不管是否被transient修饰，均不能被序列化</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TransientTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">User</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Serializable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">long</span> serialVersionUID = <span class="hljs-number">7195941599855555739L</span>;</span><br><span class="line">        <span class="hljs-keyword">private</span> String username;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> String password;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getUsername</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> username;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setUsername</span><span class="hljs-params">(String username)</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">this</span>.username = username;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getPassword</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> password;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setPassword</span><span class="hljs-params">(String password)</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">this</span>.password = password;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;</span><br><span class="line">        User user = <span class="hljs-keyword">new</span> User();</span><br><span class="line">        user.setUsername(<span class="hljs-string">"chang"</span>);</span><br><span class="line">        user.setPassword(<span class="hljs-string">"123456"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="hljs-string">"read before Serializable: "</span>);</span><br><span class="line">        System.out.println(<span class="hljs-string">"username: "</span> + user.getUsername());</span><br><span class="line">        System.out.println(<span class="hljs-string">"password: "</span> + user.getPassword());</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">            ObjectOutputStream os = <span class="hljs-keyword">new</span> ObjectOutputStream(</span><br><span class="line">                    <span class="hljs-keyword">new</span> FileOutputStream(<span class="hljs-string">"/Users/admin/Desktop/user.txt"</span>));</span><br><span class="line">            os.writeObject(user); <span class="hljs-comment">// 将User对象写进文件</span></span><br><span class="line">            os.flush();</span><br><span class="line">            os.close();</span><br><span class="line">        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">            User.password = <span class="hljs-string">"1111"</span>;<span class="hljs-comment">//在反序列化之前修改了静态变量的值</span></span><br><span class="line">            ObjectInputStream is = <span class="hljs-keyword">new</span> ObjectInputStream(<span class="hljs-keyword">new</span> FileInputStream(</span><br><span class="line">                    <span class="hljs-string">"/Users/admin/Desktop/user.txt"</span>));</span><br><span class="line">            user = (User) is.readObject(); <span class="hljs-comment">// 从流中读取User的数据</span></span><br><span class="line">            is.close();</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="hljs-string">"\nread after Serializable: "</span>);</span><br><span class="line">            System.out.println(<span class="hljs-string">"username: "</span> + user.getUsername());</span><br><span class="line">            System.out.println(<span class="hljs-string">"password: "</span> + user.getPassword());</span><br><span class="line"></span><br><span class="line">        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">read before Serializable: </span><br><span class="line">username: chang</span><br><span class="line">password: <span class="hljs-number">123456</span></span><br><span class="line"></span><br><span class="line">read after Serializable: </span><br><span class="line">username: chang</span><br><span class="line">password: <span class="hljs-number">1111</span></span><br></pre></td></tr></table></figure></p>
+<p>可知反序列化后类中静态变量的值为当前JVM中对应static变量的值，而不是序列化时的值</p>
+<h3 id="ArrayList的实现"><a href="#ArrayList的实现" class="headerlink" title="ArrayList的实现"></a>ArrayList的实现</h3><p>ArrayList实现了List和Serializable接口，内部由elementData数组实现，<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> Object[] elementData;</span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> size;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ArrayList</span><span class="hljs-params">(<span class="hljs-keyword">int</span> var1)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (var1 &lt; <span class="hljs-number">0</span>) &#123;</span><br><span class="line">        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalArgumentException(<span class="hljs-string">"Illegal Capacity: "</span> + var1);</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.elementData = <span class="hljs-keyword">new</span> Object[var1];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ArrayList</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">this</span>(<span class="hljs-number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可知数组的初始化容量是10，每插入一个元素时都要进行最大容量判断<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">add</span><span class="hljs-params">(E var1)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">this</span>.ensureCapacity(<span class="hljs-keyword">this</span>.size + <span class="hljs-number">1</span>);<span class="hljs-comment">//扩容校验</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.elementData[<span class="hljs-keyword">this</span>.size++] = var1;<span class="hljs-comment">//将插入的值放到尾部</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ensureCapacity</span><span class="hljs-params">(<span class="hljs-keyword">int</span> var1)</span> </span>&#123;</span><br><span class="line">    ++<span class="hljs-keyword">this</span>.modCount;</span><br><span class="line">    <span class="hljs-keyword">int</span> var2 = <span class="hljs-keyword">this</span>.elementData.length;</span><br><span class="line">    <span class="hljs-keyword">if</span> (var1 &gt; var2) &#123;<span class="hljs-comment">//超过容量需要进行Arrays.copyOf扩容</span></span><br><span class="line">        Object[] var3 = <span class="hljs-keyword">this</span>.elementData;</span><br><span class="line">        <span class="hljs-keyword">int</span> var4 = var2 * <span class="hljs-number">3</span> / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;</span><br><span class="line">        <span class="hljs-keyword">if</span> (var4 &lt; var1) &#123;</span><br><span class="line">            var4 = var1;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">this</span>.elementData = Arrays.copyOf(<span class="hljs-keyword">this</span>.elementData, var4);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>指定位置插入元素的实现<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> var1, E var2)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (var1 &lt;= <span class="hljs-keyword">this</span>.size &amp;&amp; var1 &gt;= <span class="hljs-number">0</span>) &#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.ensureCapacity(<span class="hljs-keyword">this</span>.size + <span class="hljs-number">1</span>);<span class="hljs-comment">//扩容校验</span></span><br><span class="line">        System.arraycopy(<span class="hljs-keyword">this</span>.elementData, var1, <span class="hljs-keyword">this</span>.elementData, var1 + <span class="hljs-number">1</span>, <span class="hljs-keyword">this</span>.size - var1);<span class="hljs-comment">//将指定位置后面的元素后移</span></span><br><span class="line">        <span class="hljs-keyword">this</span>.elementData[var1] = var2;<span class="hljs-comment">//添加到指定位置</span></span><br><span class="line">        ++<span class="hljs-keyword">this</span>.size;</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IndexOutOfBoundsException(<span class="hljs-string">"Index: "</span> + var1 + <span class="hljs-string">", Size: "</span> + <span class="hljs-keyword">this</span>.size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>由此可见 ArrayList的主要消耗是数组扩容以及在指定位置添加数据，在日常使用时最好是指定大小，尽量减少扩容。更要减少在指定位置插入数据的操作</p>
+<h3 id="ArrayList与transient"><a href="#ArrayList与transient" class="headerlink" title="ArrayList与transient"></a>ArrayList与transient</h3><p>通过源码得知ArrayList实现了序列化接口并且elementData是被transient修饰的，那不是序列化后的ArrayList丢失了原先的元素？<br>ArrayList内部还有两个方法<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">writeObject</span><span class="hljs-params">(ObjectOutputStream var1)</span> <span class="hljs-keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">int</span> var2 = <span class="hljs-keyword">this</span>.modCount;</span><br><span class="line">    var1.defaultWriteObject();</span><br><span class="line">    var1.writeInt(<span class="hljs-keyword">this</span>.elementData.length);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> var3 = <span class="hljs-number">0</span>; var3 &lt; <span class="hljs-keyword">this</span>.size; ++var3) &#123;</span><br><span class="line">        var1.writeObject(<span class="hljs-keyword">this</span>.elementData[var3]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.modCount != var2) &#123;</span><br><span class="line">        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ConcurrentModificationException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title">readObject</span><span class="hljs-params">(ObjectInputStream var1)</span> <span class="hljs-keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">    var1.defaultReadObject();</span><br><span class="line">    <span class="hljs-keyword">int</span> var2 = var1.readInt();</span><br><span class="line">    Object[] var3 = <span class="hljs-keyword">this</span>.elementData = <span class="hljs-keyword">new</span> Object[var2];</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> var4 = <span class="hljs-number">0</span>; var4 &lt; <span class="hljs-keyword">this</span>.size; ++var4) &#123;</span><br><span class="line">        var3[var4] = var1.readObject();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>为什么不直接用elementData来序列化，而采用上述的方式来实现序列化呢？原因在于elementData是一个缓存数组，它通常会预留一些容量，等容量不足时再扩充容量，那么有些空间可能就没有实际存储元素，采用上诉的方式来实现序列化时，就可以保证只序列化实际存储的那些元素，而不是整个数组，从而节省空间和时间</p>
+<h3 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h3><blockquote>
+<p><a href="http://www.cnblogs.com/lanxuezaipiao/p/3369962.html" target="_blank" rel="noopener">Java transient关键字使用小记</a><br><a href="https://blog.csdn.net/zero__007/article/details/52166306" target="_blank" rel="noopener">ArrayList中elementData为什么被transient修饰?</a></p>
+</blockquote>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/10/09/Java基础-equals与hashcode/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">Java基础-equals与hashcode</span>
+            </a>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+</div>
+                
+            <!--</div>-->
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div style="text-align: center">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                    <span>changjie &copy; 2016-2019</span>
+                    <span>|</span>
+                    <span><a href="http://www.miitbeian.gov.cn" target="_blank">浙ICP备16041302号</a></span>
+            </p></div>
+                <p></p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
