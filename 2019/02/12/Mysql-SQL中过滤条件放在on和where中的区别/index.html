@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://static.changjie.me/img/WX20190212-165256.png">
 <meta property="og:image" content="https://static.changjie.me/img/WX20190212-165527.png">
 <meta property="og:image" content="https://static.changjie.me/img/WX20190212-170212.png">
-<meta property="og:updated_time" content="2019-02-12T09:06:15.447Z">
+<meta property="og:updated_time" content="2019-02-12T09:12:10.856Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql-SQL中过滤条件放在on和where中的区别">
 <meta name="twitter:description" content="在使用多表关联查询时，连接条件放在on和where得到的结果集是不同的">
@@ -151,7 +151,7 @@
                 <span class="level-item has-text-grey">
                     
                     
-                    2 分钟 读完 (大约 357 个字)
+                    3 分钟 读完 (大约 404 个字)
                 </span>
                 
             </div>
@@ -178,6 +178,7 @@
 <p><img src="https://static.changjie.me/img/WX20190212-165527.png" alt=""><br>id为4的记录还在，这是由left join的特性决定的，使用left join时on后面的条件只对右表有效（可以看到右表的id=4的记录没了）</p>
 <p>使用where条件<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id <span class="hljs-keyword">where</span> p.id!=<span class="hljs-number">4</span>;</span><br></pre></td></tr></table></figure></p>
 <p><img src="https://static.changjie.me/img/WX20190212-170212.png" alt=""><br>可见id为4的记录没了</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实on上的过滤条件就是先对右表数据过滤，再与左表连接，再生成连接中间表<br>where是对中间表进行过滤</p>
 
         </div>
         
