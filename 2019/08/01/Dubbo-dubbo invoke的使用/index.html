@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Dubbo-dubbo invoke的使用 - ChangJie&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="dubbo2.0.5以后版本提供了在线调用的方式，极大的方便了调试阶段">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo-dubbo invoke的使用">
+<meta property="og:url" content="http://yoursite.com/2019/08/01/Dubbo-dubbo invoke的使用/index.html">
+<meta property="og:site_name" content="ChangJie&#39;s blog">
+<meta property="og:description" content="dubbo2.0.5以后版本提供了在线调用的方式，极大的方便了调试阶段">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-01T11:36:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dubbo-dubbo invoke的使用">
+<meta name="twitter:description" content="dubbo2.0.5以后版本提供了在线调用的方式，极大的方便了调试阶段">
+
+
+
+<link rel="alternative" href="https://changjie.me/atom.xml" title="Dubbo-dubbo invoke的使用" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="Dubbo-dubbo invoke的使用" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <!--<div class="columns">-->
+                
+                    <div class="column has-order-2 column-main" style="display: block;width: 70%;margin: auto;float: none"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-08-01T12:00:00.000Z">2019-08-01</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Dubbo/">Dubbo</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    2 分钟 读完 (大约 233 个字)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Dubbo-dubbo invoke的使用
+            
+        </h1>
+        <div class="content">
+            <p>dubbo2.0.5以后版本提供了在线调用的方式，极大的方便了调试阶段<br><a id="more"></a></p>
+<h3 id="连接提供方"><a href="#连接提供方" class="headerlink" title="连接提供方"></a>连接提供方</h3><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[nobody@aliyun-APP-121-4 ~]$ telnet 47.92.227.5 30016</span><br><span class="line">Trying 47.92.227.5...</span><br><span class="line">Connected to 47.92.227.5.</span><br><span class="line">Escape character is '^]'.</span><br><span class="line">ls</span><br><span class="line">com.raycloud.template.api.IHaibaoService</span><br><span class="line"><span class="hljs-meta">dubbo&gt;</span>ls com.raycloud.template.api.IHaibaoService</span><br><span class="line">deleteMyHaibao</span><br><span class="line">queryWatermark</span><br><span class="line">transformOldWaimaiHaibao</span><br><span class="line">queryMyPosterByCondition</span><br><span class="line">querySystemPoster</span><br><span class="line">queryMyCollectionHaibao</span><br><span class="line">queryHaibaoCategory</span><br><span class="line">queryHaibaoById</span><br><span class="line">queryMyHaibao</span><br><span class="line">queryMyCollections</span><br><span class="line">collectHaibao</span><br><span class="line">useHaibao</span><br><span class="line">transformOldHaibao</span><br><span class="line">queryHaibao</span><br><span class="line"><span class="hljs-meta">dubbo&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="invoke调用"><a href="#invoke调用" class="headerlink" title="invoke调用"></a>invoke调用</h3><ol>
+<li>请求参数是对象<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">submitHotTitleTask</span><span class="hljs-params">(HotTitleRequest request)</span> <span class="hljs-keyword">throws</span> Exception</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HotTitleRequest</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> String taobaoNick;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> String keyword;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getTaobaoNick</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> taobaoNick;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setTaobaoNick</span><span class="hljs-params">(String taobaoNick)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.taobaoNick = taobaoNick;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> String <span class="hljs-title">getKeyword</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> keyword;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setKeyword</span><span class="hljs-params">(String keyword)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.keyword = keyword;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用方式：<br><figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">invoke com.raycloud.qnrank.service.IRankItemService.submitHotTitleTask</span><br><span class="line">(</span><br><span class="line">	&#123;</span><br><span class="line">		"taobaoNick":"changjie",</span><br><span class="line">		"keyword":"踏板",</span><br><span class="line">		"class":"com.raycloud.qnrank.vo.request.HotTitleRequest"</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<ol start="2">
+<li><p>请求参数是复杂对象</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">invoke com.raycloud.template.api.IHaibaoService.querySystemPoster</span><br><span class="line">(</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="hljs-string">"haibaoUser"</span>:</span><br><span class="line">			&#123;	</span><br><span class="line">				<span class="hljs-string">"appKey"</span>:<span class="hljs-string">"21470813"</span>,</span><br><span class="line">				<span class="hljs-string">"subAppKey"</span>:<span class="hljs-string">"44782"</span>,</span><br><span class="line">				<span class="hljs-string">"class"</span>:<span class="hljs-string">"com.raycloud.template.api.domain.HaibaoUser"</span></span><br><span class="line">			&#125;,</span><br><span class="line">		<span class="hljs-string">"pageNo"</span>:<span class="hljs-string">"1"</span>,</span><br><span class="line">		<span class="hljs-string">"pageSize"</span>:<span class="hljs-string">"10"</span>,</span><br><span class="line">		<span class="hljs-string">"orderBy"</span>:<span class="hljs-string">"defaultOrder"</span>,</span><br><span class="line">		<span class="hljs-string">"desc"</span>:<span class="hljs-string">"true"</span>,</span><br><span class="line">		<span class="hljs-string">"imageGroupType"</span>:<span class="hljs-string">"PRICE_WATERMARK"</span>,</span><br><span class="line">		<span class="hljs-string">"class"</span>:<span class="hljs-string">"com.raycloud.template.api.domain.request.SystemPosterRequest"</span></span><br><span class="line">	&#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多个请求参数</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function">ImageResponse <span class="hljs-title">queryHaibaoById</span><span class="hljs-params">(HaibaoUser haibaoUser, String imageId, String type)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>调用方式：<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">invoke com.raycloud.template.api.IHaibaoService.queryHaibaoById</span><br><span class="line">(</span><br><span class="line">	&#123;	</span><br><span class="line">		<span class="hljs-string">"appKey"</span>:<span class="hljs-string">"12011554"</span>,</span><br><span class="line">		<span class="hljs-string">"subAppKey"</span>:<span class="hljs-string">"32644"</span>,</span><br><span class="line">		<span class="hljs-string">"class"</span>:<span class="hljs-string">"com.raycloud.template.api.domain.HaibaoUser"</span></span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="hljs-string">"3613"</span>,</span><br><span class="line">	<span class="hljs-string">"sm"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/03/12/Java-集合操作常见的ConcurrentModificationException/">
+                <span class="level-item">Java-集合操作常见的ConcurrentModificationException</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+            <!--</div>-->
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div style="text-align: center">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                    <span>changjie &copy; 2016-2019</span>
+                    <span>|</span>
+                    <span><a href="http://www.miitbeian.gov.cn" target="_blank">浙ICP备16041302号</a></span>
+            </p></div>
+                <p></p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    
+</footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/1.6.8/js/lightgallery.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
