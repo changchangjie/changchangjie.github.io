@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://static.changjie.me/img/nginx%E6%B2%A1%E6%9C%89%E5%BC%80%E5%90%AFgzip.png">
 <meta property="og:image" content="http://static.changjie.me/img/nginx%E5%BC%80%E5%90%AFgzip.png">
 <meta property="og:image" content="http://static.changjie.me/img/%E5%BC%80%E5%90%AF%E4%BA%86gzip%E6%9C%8936KB.png">
-<meta property="og:updated_time" content="2019-11-12T12:36:40.980Z">
+<meta property="og:updated_time" content="2019-11-12T12:37:54.241Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法">
 <meta name="twitter:description" content="今天请求一个http接口时，提示出错，但是后端服务器没有异常日志，console控制台发现如下的错误">
@@ -169,8 +169,9 @@
 <li>浏览器发送请求到服务器，请求头中 Accept-Encoding: gzip, deflate。 (告诉服务器， 浏览器支持 gzip、deflate 压缩)</li>
 <li>服务器收到请求后，生成 Response, 其中有 Content-Type 和 Content-Length。</li>
 <li>服务器进行 Gzip 压缩，对响应体进行压缩，修改 Content-Length， 响应头中增加 Content-Encoding:gzip</li>
-<li>浏览器收到响应后，根据 Content-Encoding:gzip 来对 Response 进行解码<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4>nginx开启gzip即可，相关指令位于http{…}两个大括号之间<br>开启gzip后<br><img src="http://static.changjie.me/img/nginx%E5%BC%80%E5%90%AFgzip.png" alt=""><br><img src="http://static.changjie.me/img/%E5%BC%80%E5%90%AF%E4%BA%86gzip%E6%9C%8936KB.png" alt=""><br>可见开启了gzip，返回实体小了10倍<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><a href="https://www.aquatalking.com/blog/detail/1e6n5da" target="_blank" rel="noopener">nginx 实践之 gzip 压缩</a></li>
+<li>浏览器收到响应后，根据 Content-Encoding:gzip 来对 Response 进行解码  <h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4>nginx开启gzip即可，相关指令位于http{…}两个大括号之间<br>开启gzip后<br><img src="http://static.changjie.me/img/nginx%E5%BC%80%E5%90%AFgzip.png" alt=""><br><img src="http://static.changjie.me/img/%E5%BC%80%E5%90%AF%E4%BA%86gzip%E6%9C%8936KB.png" alt=""><br>可见开启了gzip，返回实体小了10倍</li>
 </ol>
+<h4 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h4><p><a href="https://www.aquatalking.com/blog/detail/1e6n5da" target="_blank" rel="noopener">nginx 实践之 gzip 压缩</a></p>
 
         </div>
         
