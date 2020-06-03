@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+<title>Dubbo-dubbo invoke的使用 - ChangJie&#39;s blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+    <meta name="description" content="Sentinel是阿里提供的一个限流降级组件，通过简单的API即可实现限流功能，可无缝嵌入Spring、Dubbo等应用常见限流算法有漏铜、令牌桶、时间窗口，Sentinel用的是时间窗口算法来实现的限流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dubbo-dubbo invoke的使用">
+<meta property="og:url" content="http://yoursite.com/2020/06/03/Sentinel-Sentinel原理/index.html">
+<meta property="og:site_name" content="ChangJie&#39;s blog">
+<meta property="og:description" content="Sentinel是阿里提供的一个限流降级组件，通过简单的API即可实现限流功能，可无缝嵌入Spring、Dubbo等应用常见限流算法有漏铜、令牌桶、时间窗口，Sentinel用的是时间窗口算法来实现的限流">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-03T11:40:12.242Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dubbo-dubbo invoke的使用">
+<meta name="twitter:description" content="Sentinel是阿里提供的一个限流降级组件，通过简单的API即可实现限流功能，可无缝嵌入Spring、Dubbo等应用常见限流算法有漏铜、令牌桶、时间窗口，Sentinel用的是时间窗口算法来实现的限流">
+
+
+
+<link rel="alternative" href="https://changjie.me/atom.xml" title="Dubbo-dubbo invoke的使用" type="application/atom+xml">
+
+
+
+<link rel="icon" href="/images/favicon.svg">
+
+
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/bulma/0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.4.1/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
+    
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/lightgallery/1.6.8/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdnjs.loli.net/ajax/libs/pace/1.0.2/pace.min.js"></script>
+
+    
+    
+    
+
+    
+
+
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="Dubbo-dubbo invoke的使用" height="28">
+            
+            </a>
+        </div>
+        <div class="navbar-menu">
+            
+            <div class="navbar-start">
+                
+                <a class="navbar-item" href="/">Home</a>
+                
+                <a class="navbar-item" href="/archives">Archives</a>
+                
+                <a class="navbar-item" href="/categories">Categories</a>
+                
+                <a class="navbar-item" href="/tags">Tags</a>
+                
+                <a class="navbar-item" href="/about">About</a>
+                
+            </div>
+            
+            <div class="navbar-end">
+                
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
+            </div>
+        </div>
+    </div>
+</nav>
+    
+    <section class="section">
+        <div class="container">
+            <!--<div class="columns">-->
+                
+                    <div class="column has-order-2 column-main" style="display: block;width: 70%;margin: auto;float: none"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-06-03T11:30:00.000Z">2020-06-03</time>
+                
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/Sentinel/">Sentinel</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    14 分钟 读完 (大约 2142 个字)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                Dubbo-dubbo invoke的使用
+            
+        </h1>
+        <div class="content">
+            <p>Sentinel是阿里提供的一个限流降级组件，通过简单的API即可实现限流功能，可无缝嵌入Spring、Dubbo等应用<br>常见限流算法有漏铜、令牌桶、时间窗口，Sentinel用的是时间窗口算法来实现的限流<br><a id="more"></a></p>
+<h3 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">(String[] args)</span> </span>&#123;</span><br><span class="line">        initFlowRules(); <span class="hljs-comment">//初始化一个规则</span></span><br><span class="line">        <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>)&#123;</span><br><span class="line">            Entry entry=<span class="hljs-keyword">null</span>;</span><br><span class="line">            <span class="hljs-keyword">try</span>&#123;</span><br><span class="line">                entry= SphU.entry(resource); <span class="hljs-comment">//它做了什么</span></span><br><span class="line">                System.out.println(<span class="hljs-string">"Hello Word"</span>);</span><br><span class="line">            &#125;<span class="hljs-keyword">catch</span> (BlockException e)&#123;<span class="hljs-comment">//如果被限流了，那么会抛出这个异常</span></span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;<span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">                <span class="hljs-keyword">if</span>(entry!=<span class="hljs-keyword">null</span>)&#123;</span><br><span class="line">                    entry.exit();<span class="hljs-comment">// 释放</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="这里从SphU-entry-resource-进行分析"><a href="#这里从SphU-entry-resource-进行分析" class="headerlink" title="这里从SphU.entry(resource)进行分析"></a>这里从SphU.entry(resource)进行分析</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> Entry <span class="hljs-title">entryWithPriority</span><span class="hljs-params">(ResourceWrapper resourceWrapper, <span class="hljs-keyword">int</span> count, <span class="hljs-keyword">boolean</span> prioritized, Object... args)</span> <span class="hljs-keyword">throws</span> BlockException </span>&#123;</span><br><span class="line">    Context context = ContextUtil.getContext();</span><br><span class="line">    <span class="hljs-keyword">if</span> (context <span class="hljs-keyword">instanceof</span> NullContext) &#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CtEntry(resourceWrapper, (ProcessorSlot)<span class="hljs-keyword">null</span>, context);</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> (context == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">            context = CtSph.InternalContextUtil.internalEnter(<span class="hljs-string">"sentinel_default_context"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (!Constants.ON) &#123;</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CtEntry(resourceWrapper, (ProcessorSlot)<span class="hljs-keyword">null</span>, context);</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-comment">//重点在这里,从上面的资源名初始化了一个resourceWrapper对象,然后获取对应资源的处理链条</span></span><br><span class="line">            ProcessorSlot&lt;Object&gt; chain = <span class="hljs-keyword">this</span>.lookProcessChain(resourceWrapper);</span><br><span class="line">            <span class="hljs-keyword">if</span> (chain == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> CtEntry(resourceWrapper, (ProcessorSlot)<span class="hljs-keyword">null</span>, context);</span><br><span class="line">            &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">                CtEntry e = <span class="hljs-keyword">new</span> CtEntry(resourceWrapper, chain, context);</span><br><span class="line"></span><br><span class="line">                <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">                    chain.entry(context, resourceWrapper, (Object)<span class="hljs-keyword">null</span>, count, prioritized, args);</span><br><span class="line">                &#125; <span class="hljs-keyword">catch</span> (BlockException var9) &#123;</span><br><span class="line">                    e.exit(count, args);</span><br><span class="line">                    <span class="hljs-keyword">throw</span> var9;</span><br><span class="line">                &#125; <span class="hljs-keyword">catch</span> (Throwable var10) &#123;</span><br><span class="line">                    RecordLog.info(<span class="hljs-string">"Sentinel unexpected exception"</span>, var10);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="hljs-keyword">return</span> e;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function">ProcessorSlot&lt;Object&gt; <span class="hljs-title">lookProcessChain</span><span class="hljs-params">(ResourceWrapper resourceWrapper)</span> </span>&#123;</span><br><span class="line">    ProcessorSlotChain chain = (ProcessorSlotChain)chainMap.get(resourceWrapper);</span><br><span class="line">    <span class="hljs-keyword">if</span> (chain == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">        <span class="hljs-keyword">synchronized</span>(LOCK) &#123;</span><br><span class="line">            <span class="hljs-comment">//将资源对应的处理链存入HASHMAP</span></span><br><span class="line">            chain = (ProcessorSlotChain)chainMap.get(resourceWrapper);</span><br><span class="line">            <span class="hljs-comment">//双重检查防止并发</span></span><br><span class="line">            <span class="hljs-keyword">if</span> (chain == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">                <span class="hljs-comment">//可见资源规则不能超过6K个,一般也不会那么多</span></span><br><span class="line">                <span class="hljs-keyword">if</span> (chainMap.size() &gt;= <span class="hljs-number">6000</span>) &#123;</span><br><span class="line">                    <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="hljs-comment">//从这里看下是怎么初始化处理链的</span></span><br><span class="line">                chain = SlotChainProvider.newSlotChain();</span><br><span class="line">                Map&lt;ResourceWrapper, ProcessorSlotChain&gt; newMap = <span class="hljs-keyword">new</span> HashMap(chainMap.size() + <span class="hljs-number">1</span>);</span><br><span class="line">                newMap.putAll(chainMap);</span><br><span class="line">                newMap.put(resourceWrapper, chain);</span><br><span class="line">                chainMap = newMap;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> chain;</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ProcessorSlotChain <span class="hljs-title">newSlotChain</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (slotChainBuilder != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> slotChainBuilder.build();</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-comment">//通过SPI可自定义处理链构造器</span></span><br><span class="line">        slotChainBuilder = (SlotChainBuilder)SpiLoader.loadFirstInstanceOrDefault(SlotChainBuilder.class, DefaultSlotChainBuilder.class);</span><br><span class="line">        <span class="hljs-keyword">if</span> (slotChainBuilder == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">            RecordLog.warn(<span class="hljs-string">"[SlotChainProvider] Wrong state when resolving slot chain builder, using default"</span>, <span class="hljs-keyword">new</span> Object[<span class="hljs-number">0</span>]);</span><br><span class="line">            <span class="hljs-comment">//使用默认的处理链构造器</span></span><br><span class="line">            slotChainBuilder = <span class="hljs-keyword">new</span> DefaultSlotChainBuilder();</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            RecordLog.info(<span class="hljs-string">"[SlotChainProvider] Global slot chain builder resolved: "</span> + slotChainBuilder.getClass().getCanonicalName(), <span class="hljs-keyword">new</span> Object[<span class="hljs-number">0</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="hljs-comment">//走到这里，看下默认的处理链构造器怎么初始化处理链的</span></span><br><span class="line">        <span class="hljs-keyword">return</span> slotChainBuilder.build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> ProcessorSlotChain <span class="hljs-title">build</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    ProcessorSlotChain chain = <span class="hljs-keyword">new</span> DefaultProcessorSlotChain();</span><br><span class="line">    <span class="hljs-comment">//去加载处理链,Sentinel提供的处理器都实现了ProcessorSlot接口</span></span><br><span class="line">    List&lt;ProcessorSlot&gt; sortedSlotList = SpiLoader.loadPrototypeInstanceListSorted(ProcessorSlot.class);</span><br><span class="line">    Iterator var3 = sortedSlotList.iterator();</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">while</span>(var3.hasNext()) &#123;</span><br><span class="line">        ProcessorSlot slot = (ProcessorSlot)var3.next();</span><br><span class="line">        <span class="hljs-keyword">if</span> (!(slot <span class="hljs-keyword">instanceof</span> AbstractLinkedProcessorSlot)) &#123;</span><br><span class="line">            RecordLog.warn(<span class="hljs-string">"The ProcessorSlot("</span> + slot.getClass().getCanonicalName() + <span class="hljs-string">") is not an instance of AbstractLinkedProcessorSlot, can't be added into ProcessorSlotChain"</span>, <span class="hljs-keyword">new</span> Object[<span class="hljs-number">0</span>]);</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-comment">//构建责任链</span></span><br><span class="line">            chain.addLast((AbstractLinkedProcessorSlot)slot);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">return</span> chain;</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; <span class="hljs-function">List&lt;T&gt; <span class="hljs-title">loadPrototypeInstanceListSorted</span><span class="hljs-params">(Class&lt;T&gt; clazz)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">        <span class="hljs-comment">//这里就拿到了默认的处理器了</span></span><br><span class="line">        ServiceLoader&lt;T&gt; serviceLoader = ServiceLoaderUtil.getServiceLoader(clazz);</span><br><span class="line">        List&lt;SpiLoader.SpiOrderWrapper&lt;T&gt;&gt; orderWrappers = <span class="hljs-keyword">new</span> ArrayList();</span><br><span class="line">        Iterator var3 = serviceLoader.iterator();</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">while</span>(var3.hasNext()) &#123;</span><br><span class="line">            T spi = var3.next();</span><br><span class="line">            <span class="hljs-keyword">int</span> order = SpiLoader.SpiOrderResolver.resolveOrder(spi);</span><br><span class="line">            <span class="hljs-comment">//这里对这些处理器按照order进行排序</span></span><br><span class="line">            SpiLoader.SpiOrderResolver.insertSorted(orderWrappers, spi, order);</span><br><span class="line">            RecordLog.debug(<span class="hljs-string">"[SpiLoader] Found &#123;&#125; SPI: &#123;&#125; with order &#123;&#125;"</span>, <span class="hljs-keyword">new</span> Object[]&#123;clazz.getSimpleName(), spi.getClass().getCanonicalName(), order&#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        List&lt;T&gt; list = <span class="hljs-keyword">new</span> ArrayList(orderWrappers.size());</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; orderWrappers.size(); ++i) &#123;</span><br><span class="line">            list.add(((SpiLoader.SpiOrderWrapper)orderWrappers.get(i)).spi);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">return</span> list;</span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span> (Throwable var6) &#123;</span><br><span class="line">        RecordLog.error(<span class="hljs-string">"[SpiLoader] ERROR: loadPrototypeInstanceListSorted failed"</span>, var6);</span><br><span class="line">        var6.printStackTrace();</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> ArrayList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Sentinel提供的处理器"><a href="#Sentinel提供的处理器" class="headerlink" title="Sentinel提供的处理器"></a>Sentinel提供的处理器</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">NodeSelectorSlot:收集资源的路径，并将这些资源的调用路径，以树状结构存储起来，用于根据调用路径来限流降级</span><br><span class="line">ClusterBuilderSlot:用于存储资源的统计信息以及调用者信息，例如该资源的 RT, QPS, thread count 等等，这些信息将用作为多维度限流，降级的依据</span><br><span class="line">LogSlot:发生限流时记录日志用的</span><br><span class="line">StatisticSlot:用于记录、统计不同纬度的 runtime 指标监控信息</span><br><span class="line">SystemSlot:通过系统的状态，例如 load1 等，来控制总的入口流量</span><br><span class="line">AuthoritySlot:根据配置的黑白名单和调用来源信息，来做黑白名单控制</span><br><span class="line">FlowSlot:用于根据预设的限流规则以及前面 slot 统计的状态，来进行流量控制</span><br><span class="line">DegradeSlot:通过统计信息以及预设的规则，来做熔断降级</span><br></pre></td></tr></table></figure>
+<h3 id="Sentinel大致原理"><a href="#Sentinel大致原理" class="headerlink" title="Sentinel大致原理"></a>Sentinel大致原理</h3><p>从上面可以看出Sentinel的基本原理了，通过调用拦截，找到对应的处理链(加载过的话就从缓存里拿了)，这里处理链都是实现ProcessorSlot接口的，然后形成调用链依次执行相应的entry方法，核心在于<br>StatisticSlot统计插槽和FlowSlot限流插槽</p>
+<h3 id="StatisticSlot"><a href="#StatisticSlot" class="headerlink" title="StatisticSlot"></a>StatisticSlot</h3><p>StatisticSlot作用在于统计当前时间窗口的QPS与线程信息，用于FlowSlot进行限流的依据<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">entry</span><span class="hljs-params">(Context context, ResourceWrapper resourceWrapper, DefaultNode node, <span class="hljs-keyword">int</span> count, <span class="hljs-keyword">boolean</span> prioritized, Object... args)</span> <span class="hljs-keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">    Iterator var8;</span><br><span class="line">    ProcessorSlotEntryCallback handler;</span><br><span class="line">    <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.fireEntry(context, resourceWrapper, node, count, prioritized, args);</span><br><span class="line">        <span class="hljs-comment">//走到这里说明没被限流，进行统计线程数和请求数</span></span><br><span class="line">        node.increaseThreadNum();</span><br><span class="line">        node.addPassRequest(count);</span><br><span class="line">        <span class="hljs-keyword">if</span> (context.getCurEntry().getOriginNode() != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">            context.getCurEntry().getOriginNode().increaseThreadNum();</span><br><span class="line">            context.getCurEntry().getOriginNode().addPassRequest(count);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (resourceWrapper.getEntryType() == EntryType.IN) &#123;</span><br><span class="line">            Constants.ENTRY_NODE.increaseThreadNum();</span><br><span class="line">            Constants.ENTRY_NODE.addPassRequest(count);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Iterator var13 = StatisticSlotCallbackRegistry.getEntryCallbacks().iterator();</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">while</span>(var13.hasNext()) &#123;</span><br><span class="line">            ProcessorSlotEntryCallback&lt;DefaultNode&gt; handler = (ProcessorSlotEntryCallback)var13.next();</span><br><span class="line">            handler.onPass(context, resourceWrapper, node, count, args);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span> (PriorityWaitException var10) &#123;</span><br><span class="line">        node.increaseThreadNum();</span><br><span class="line">        <span class="hljs-keyword">if</span> (context.getCurEntry().getOriginNode() != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">            context.getCurEntry().getOriginNode().increaseThreadNum();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (resourceWrapper.getEntryType() == EntryType.IN) &#123;</span><br><span class="line">            Constants.ENTRY_NODE.increaseThreadNum();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var8 = StatisticSlotCallbackRegistry.getEntryCallbacks().iterator();</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">while</span>(var8.hasNext()) &#123;</span><br><span class="line">            handler = (ProcessorSlotEntryCallback)var8.next();</span><br><span class="line">            handler.onPass(context, resourceWrapper, node, count, args);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span> (BlockException var11) &#123;</span><br><span class="line">        <span class="hljs-comment">//这里就是被限流了，统计被限流的请求信息</span></span><br><span class="line">        BlockException e = var11;</span><br><span class="line">        context.getCurEntry().setError(var11);</span><br><span class="line">        node.increaseBlockQps(count);</span><br><span class="line">        <span class="hljs-keyword">if</span> (context.getCurEntry().getOriginNode() != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">            context.getCurEntry().getOriginNode().increaseBlockQps(count);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (resourceWrapper.getEntryType() == EntryType.IN) &#123;</span><br><span class="line">            Constants.ENTRY_NODE.increaseBlockQps(count);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        var8 = StatisticSlotCallbackRegistry.getEntryCallbacks().iterator();</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">while</span>(var8.hasNext()) &#123;</span><br><span class="line">            handler = (ProcessorSlotEntryCallback)var8.next();</span><br><span class="line">            handler.onBlocked(e, context, resourceWrapper, node, count, args);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">throw</span> e;</span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span> (Throwable var12) &#123;</span><br><span class="line">        context.getCurEntry().setError(var12);</span><br><span class="line">        node.increaseExceptionQps(count);</span><br><span class="line">        <span class="hljs-keyword">if</span> (context.getCurEntry().getOriginNode() != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">            context.getCurEntry().getOriginNode().increaseExceptionQps(count);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">if</span> (resourceWrapper.getEntryType() == EntryType.IN) &#123;</span><br><span class="line">            Constants.ENTRY_NODE.increaseExceptionQps(count);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">throw</span> var12;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-comment">//记录被通过的请求</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addPassRequest</span><span class="hljs-params">(<span class="hljs-keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//这里走到了父类StatisticNode</span></span><br><span class="line">    <span class="hljs-keyword">super</span>.addPassRequest(count);</span><br><span class="line">    <span class="hljs-keyword">this</span>.clusterNode.addPassRequest(count);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addPassRequest</span><span class="hljs-params">(<span class="hljs-keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//看下StatisticNode的这个属性怎么初始化的</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.rollingCounterInSecond.addPass(count);</span><br><span class="line">    <span class="hljs-keyword">this</span>.rollingCounterInMinute.addPass(count);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> <span class="hljs-keyword">volatile</span> Metric rollingCounterInSecond;</span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">transient</span> Metric rollingCounterInMinute;</span><br><span class="line"><span class="hljs-keyword">private</span> LongAdder curThreadNum;</span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">long</span> lastFetchTime;</span><br><span class="line"></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">StatisticNode</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//默认初始化一个sampleCount为2，intervalInMs为1000的ArrayMetric对象</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.rollingCounterInSecond = <span class="hljs-keyword">new</span> ArrayMetric(SampleCountProperty.SAMPLE_COUNT, IntervalProperty.INTERVAL);</span><br><span class="line">    <span class="hljs-keyword">this</span>.rollingCounterInMinute = <span class="hljs-keyword">new</span> ArrayMetric(<span class="hljs-number">60</span>, <span class="hljs-number">60000</span>, <span class="hljs-keyword">false</span>);</span><br><span class="line">    <span class="hljs-keyword">this</span>.curThreadNum = <span class="hljs-keyword">new</span> LongAdder();</span><br><span class="line">    <span class="hljs-keyword">this</span>.lastFetchTime = -<span class="hljs-number">1L</span>;</span><br><span class="line">&#125;</span><br><span class="line">看下ArrayMetric</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ArrayMetric</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sampleCount, <span class="hljs-keyword">int</span> intervalInMs)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//上面的构造方法走到了这里</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.data = <span class="hljs-keyword">new</span> OccupiableBucketLeapArray(sampleCount, intervalInMs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">OccupiableBucketLeapArray</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sampleCount, <span class="hljs-keyword">int</span> intervalInMs)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//看下父类LeapArray的构造方法</span></span><br><span class="line">    <span class="hljs-keyword">super</span>(sampleCount, intervalInMs);</span><br><span class="line">    <span class="hljs-keyword">this</span>.borrowArray = <span class="hljs-keyword">new</span> FutureBucketLeapArray(sampleCount, intervalInMs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LeapArray</span><span class="hljs-params">(<span class="hljs-keyword">int</span> sampleCount, <span class="hljs-keyword">int</span> intervalInMs)</span> </span>&#123;</span><br><span class="line">    AssertUtil.isTrue(sampleCount &gt; <span class="hljs-number">0</span>, <span class="hljs-string">"bucket count is invalid: "</span> + sampleCount);</span><br><span class="line">    AssertUtil.isTrue(intervalInMs &gt; <span class="hljs-number">0</span>, <span class="hljs-string">"total time interval of the sliding window should be positive"</span>);</span><br><span class="line">    AssertUtil.isTrue(intervalInMs % sampleCount == <span class="hljs-number">0</span>, <span class="hljs-string">"time span needs to be evenly divided"</span>);</span><br><span class="line">    <span class="hljs-comment">//单位时间窗口的时间长度</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.windowLengthInMs = intervalInMs / sampleCount;</span><br><span class="line">    <span class="hljs-keyword">this</span>.intervalInMs = intervalInMs;</span><br><span class="line">    <span class="hljs-comment">//时间窗口个数</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.sampleCount = sampleCount;</span><br><span class="line">    <span class="hljs-comment">//与时间窗口数量相等的数组</span></span><br><span class="line">    <span class="hljs-keyword">this</span>.array = <span class="hljs-keyword">new</span> AtomicReferenceArray(sampleCount);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-comment">//回到上面的this.rollingCounterInSecond.addPass(count);</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">addSuccess</span><span class="hljs-params">(<span class="hljs-keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//拿到当前时间的时间窗口，看下时间窗口怎么拿的</span></span><br><span class="line">    WindowWrap&lt;MetricBucket&gt; wrap = <span class="hljs-keyword">this</span>.data.currentWindow();</span><br><span class="line">    <span class="hljs-comment">//给当前时间窗口增加请求数，这样FlowSlot就能用这里值去做限流了</span></span><br><span class="line">    ((MetricBucket)wrap.value()).addSuccess(count);</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> WindowWrap&lt;T&gt; <span class="hljs-title">currentWindow</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//获取当前时间戳对应的时间窗口</span></span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.currentWindow(TimeUtil.currentTimeMillis());</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> WindowWrap&lt;T&gt; <span class="hljs-title">currentWindow</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timeMillis)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">if</span> (timeMillis &lt; <span class="hljs-number">0L</span>) &#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;</span><br><span class="line">    &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">        <span class="hljs-comment">//计算当前时间窗口下标</span></span><br><span class="line">        <span class="hljs-keyword">int</span> idx = <span class="hljs-keyword">this</span>.calculateTimeIdx(timeMillis);</span><br><span class="line">        <span class="hljs-comment">//计算当前时间戳所在的时间窗口的开始时间，即要计算出 WindowWrap 中 windowStart 的值，其实就是要算出小于当前时间戳，并且是 windowLengthInMs 的整数倍最大的数字，Sentinel 给出是算法为 ( timeMillis - timeMillis % windowLengthInMs )</span></span><br><span class="line">        <span class="hljs-keyword">long</span> windowStart = <span class="hljs-keyword">this</span>.calculateWindowStart(timeMillis);</span><br><span class="line"></span><br><span class="line">        <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;</span><br><span class="line">            <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>) &#123;</span><br><span class="line">                WindowWrap&lt;T&gt; old = (WindowWrap)<span class="hljs-keyword">this</span>.array.get(idx);</span><br><span class="line">                WindowWrap window;</span><br><span class="line">                <span class="hljs-comment">//旧时间窗口不存在，说明当前是对应时间窗口的第一个请求，直接初始化一个时间窗口就好了</span></span><br><span class="line">                <span class="hljs-keyword">if</span> (old == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">                    window = <span class="hljs-keyword">new</span> WindowWrap((<span class="hljs-keyword">long</span>)<span class="hljs-keyword">this</span>.windowLengthInMs, windowStart, <span class="hljs-keyword">this</span>.newEmptyBucket(timeMillis));</span><br><span class="line">                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.array.compareAndSet(idx, (Object)<span class="hljs-keyword">null</span>, window)) &#123;</span><br><span class="line">                        <span class="hljs-keyword">return</span> window;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    Thread.yield();</span><br><span class="line">                &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">                    <span class="hljs-comment">//当前时间对应的窗口开始时间等于旧窗口的开始时间,直接返回旧窗口</span></span><br><span class="line">                    <span class="hljs-keyword">if</span> (windowStart == old.windowStart()) &#123;</span><br><span class="line">                        <span class="hljs-keyword">return</span> old;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="hljs-comment">//如果当前时间窗口的开始时间已经超过了old窗口的开始时间,则放弃old窗口,并将time设置为新的时间窗口的开始时间，此时窗口向前滑动,arrays数组中的窗口将会有一个失效，会有另一个新的窗口进行替换</span></span><br><span class="line">                    <span class="hljs-keyword">if</span> (windowStart &gt; old.windowStart()) &#123;</span><br><span class="line">                        <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.updateLock.tryLock()) &#123;</span><br><span class="line">                            <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">                                window = <span class="hljs-keyword">this</span>.resetWindowTo(old, windowStart);</span><br><span class="line">                            &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">                                <span class="hljs-keyword">this</span>.updateLock.unlock();</span><br><span class="line">                            &#125;</span><br><span class="line"></span><br><span class="line">                            <span class="hljs-keyword">return</span> window;</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line">                        Thread.yield();</span><br><span class="line">                    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (windowStart &lt; old.windowStart()) &#123;</span><br><span class="line">                        <span class="hljs-comment">//这里走不到</span></span><br><span class="line">                        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> WindowWrap((<span class="hljs-keyword">long</span>)<span class="hljs-keyword">this</span>.windowLengthInMs, windowStart, <span class="hljs-keyword">this</span>.newEmptyBucket(timeMillis));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">int</span> <span class="hljs-title">calculateTimeIdx</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timeMillis)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//重要:time每增加一个windowLength的长度，timeId就会增加1，时间窗口就会往前滑动一个</span></span><br><span class="line">    <span class="hljs-keyword">long</span> timeId = timeMillis / (<span class="hljs-keyword">long</span>)<span class="hljs-keyword">this</span>.windowLengthInMs;</span><br><span class="line">    <span class="hljs-comment">//获取对应时间窗口的数组下标</span></span><br><span class="line">    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">int</span>)(timeId % (<span class="hljs-keyword">long</span>)<span class="hljs-keyword">this</span>.array.length());</span><br><span class="line">&#125;</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">long</span> <span class="hljs-title">calculateWindowStart</span><span class="hljs-params">(<span class="hljs-keyword">long</span> timeMillis)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-comment">//用当前时间减去一个值,结果肯定是小于当前时间的,减去的是对单位时间窗口的余数,所以结果肯定是windowLengthInMs的倍数,所以就是小于当前时间并且是windowLengthInMs最大整数倍的一个值</span></span><br><span class="line">    <span class="hljs-keyword">return</span> timeMillis - timeMillis % (<span class="hljs-keyword">long</span>)<span class="hljs-keyword">this</span>.windowLengthInMs;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/2019/11/12/Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH-200-(OK)解决办法/">
+                <span class="level-item">Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
+    </div>
+</div>
+
+
+</div>
+                
+            <!--</div>-->
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div style="text-align: center">
+            <div class="level-start has-text-centered-mobile">
+                <p class="is-size-7">
+                    <span>changjie &copy; 2016-2020</span>
+                    <span>|</span>
+                    <span><a href="http://www.miitbeian.gov.cn" target="_blank">浙ICP备16041302号</a></span>
+            </p></div>
+                <p></p>
+            </div>
+            <div class="level-end">
+            
+            </div>
+        </div>
+    
+</footer>
+    <script src="https://cdnjs.loli.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.loli.net/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdnjs.loli.net/ajax/libs/lightgallery/1.6.8/js/lightgallery.min.js" defer></script>
+    <script src="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdnjs.loli.net/ajax/libs/outdated-browser/1.1.5/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdnjs.loli.net/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdnjs.loli.net/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script>
+    <script src="/js/clipboard.js" defer></script>
+    
+
+    
+
+
+<script src="/js/main.js" defer></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
+</body>
+</html>
