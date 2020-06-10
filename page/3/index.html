@@ -130,365 +130,6 @@
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-12T07:10:00.000Z">2018-10-12</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/多线程/">多线程</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    5 分钟 读完 (大约 787 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/12/多线程-ThreadPoolExecutor用法/">多线程-ThreadPoolExecutor用法</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">int</span> corePoolSize;<span class="hljs-comment">//核心线程数，默认情况下核心线程会一直存活，即使处于闲置状态也不会受存keepAliveTime限制。除非将allowCoreThreadTimeOut设置为true</span></span><br><span class="line"><span class="hljs-keyword">int</span> maximumPoolSize<span class="hljs-comment">//线程池所能容纳的最大线程数。超过这个数的线程将被阻塞。当任务队列为没有设置大小的LinkedBlockingDeque时，这个值无效</span></span><br><span class="line"><span class="hljs-keyword">long</span> keepAliveTime<span class="hljs-comment">//非核心线程的闲置超时时间，超过这个时间就会被回收</span></span><br><span class="line">TimeUnit unit<span class="hljs-comment">//指定keepAliveTime的单位</span></span><br><span class="line">BlockingQueue&lt;Runnable&gt; workQueue<span class="hljs-comment">//线程池中的任务队列，常用的是：ArrayBlockingQueue、LinkedBlockingQueue、SynchronousQueue</span></span><br><span class="line">ThreadFactory threadFactory<span class="hljs-comment">//线程工厂，提供创建新线程的功能</span></span><br><span class="line">RejectedExecutionHandler handler<span class="hljs-comment">//拒绝策略，线程池线程数达到最大值并且任务队列满时触发</span></span><br></pre></td></tr></table></figure>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/12/多线程-ThreadPoolExecutor用法/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-11T09:00:00.000Z">2018-10-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Mysql/">Mysql</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    几秒 读完 (大约 43 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/11/Mysql-按小时统计数据/">Mysql-按小时统计数据</a>
-            
-        </h1>
-        <div class="content">
-            <p>Mysql统计一天中每小时数据量sql如下<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> created, <span class="hljs-keyword">count</span>(created)</span><br><span class="line"><span class="hljs-keyword">from</span> (</span><br><span class="line">       <span class="hljs-keyword">select</span> <span class="hljs-keyword">DATE_FORMAT</span>( created ,<span class="hljs-string">'%Y-%m-%d %H'</span>) created </span><br><span class="line">       <span class="hljs-keyword">from</span> shop_check_result </span><br><span class="line">       <span class="hljs-keyword">where</span> created &gt; <span class="hljs-string">'2018-10-08 00:00:00'</span> <span class="hljs-keyword">and</span> created &lt; <span class="hljs-string">'2018-10-09 00:00:00'</span> </span><br><span class="line">     ) a</span><br><span class="line"><span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> created;</span><br></pre></td></tr></table></figure></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/11/Mysql-按小时统计数据/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-10T11:10:00.000Z">2018-10-10</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java集合/">java集合</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    5 分钟 读完 (大约 790 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/10/Java集合-List之LinkedList/">Java集合-List之LinkedList</a>
-            
-        </h1>
-        <div class="content">
-            <p>LinkedList底层的链表结构使它支持高效的插入和删除操作，另外它实现了Deque接口，使得LinkedList类也具有队列的特性<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span>&lt;<span class="hljs-title">E</span>&gt; </span>&#123;</span><br><span class="line">    E item;<span class="hljs-comment">//节点值</span></span><br><span class="line">    Node&lt;E&gt; next;<span class="hljs-comment">//前驱节点</span></span><br><span class="line">    Node&lt;E&gt; prev;<span class="hljs-comment">//后继节点</span></span><br><span class="line"></span><br><span class="line">    Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) &#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.item = element;</span><br><span class="line">        <span class="hljs-keyword">this</span>.next = next;</span><br><span class="line">        <span class="hljs-keyword">this</span>.prev = prev;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/10/Java集合-List之LinkedList/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-10T07:10:00.000Z">2018-10-10</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java集合/">java集合</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    6 分钟 读完 (大约 962 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/10/Java集合-List之ArrayList/">Java集合-List之ArrayList</a>
-            
-        </h1>
-        <div class="content">
-            <p>ArrayList 的底层是数组队列，相当于动态数组。与 Java 中的数组相比，它的容量能动态增长<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">transient</span> Object[] elementData;</span><br></pre></td></tr></table></figure></p>
-<p>transient作用是为了序列化时只序列化数组内的实际元素<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/10/Java集合-List之ArrayList/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-10T03:10:00.000Z">2018-10-10</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java基础/">java基础</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    5 分钟 读完 (大约 812 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/10/Java基础-static关键字/">Java基础-static关键字</a>
-            
-        </h1>
-        <div class="content">
-            <p>static关键字主要用于下面几种场景</p>
-<h3 id="修饰成员变量和成员方法"><a href="#修饰成员变量和成员方法" class="headerlink" title="修饰成员变量和成员方法"></a>修饰成员变量和成员方法</h3><p>被 static 修饰的成员变量属于类，不属于单个这个类的某个对象，被类中所有对象共享，建议通过类名调用。被static 声明的成员变量属于静态成员变量，静态变量存放在 Java 内存区域的方法区。<br>方法区与 Java 堆一样，是各个线程共享的内存区域，它用于存储已被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。虽然Java虚拟机规范把方法区描述为堆的一个逻辑部分，但是它却有一个别名叫做 Non-Heap（非堆），目的应该是与 Java 堆区分开来。<br>HotSpot 虚拟机中方法区也常被称为 “永久代”，本质上两者并不等价。仅仅是因为 HotSpot 虚拟机设计团队用永久代来实现方法区而已，这样 HotSpot 虚拟机的垃圾收集器就可以像管理 Java 堆一样管理这部分内存了。但这样更容易遇到内存溢出问题<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/10/Java基础-static关键字/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-10T02:45:00.000Z">2018-10-10</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java基础/">java基础</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    3 分钟 读完 (大约 483 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/10/Java基础-内部类调用局部参数为何用final关键字/">Java基础-内部类中调用外部局部变量为何用final修饰</a>
-            
-        </h1>
-        <div class="content">
-            <p>在平时写代码中经常会在方法中起一个线程，但是在局部内部类中使用外部局部变量的话编译器会提示将外部局部变量定义为final类型，这是为什么呢<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">(<span class="hljs-keyword">final</span> String a, String b)</span></span>&#123;</span><br><span class="line">    <span class="hljs-keyword">new</span> Thread(<span class="hljs-keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="hljs-meta">@Override</span></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="hljs-number">1000</span>);</span><br><span class="line">            &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(Thread.currentThread().getName() + <span class="hljs-string">":"</span>+a);</span><br><span class="line">    	&#125;</span><br><span class="line">	&#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/10/Java基础-内部类调用局部参数为何用final关键字/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-09T09:00:00.000Z">2018-10-09</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java基础/">java基础</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    12 分钟 读完 (大约 1732 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/09/Java基础-servlet与jsp/">Java基础-servlet与jsp</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="servlet"><a href="#servlet" class="headerlink" title="servlet"></a>servlet</h3><p>在Java Web程序中，Servlet主要负责接收用户请求HttpServletRequest,在doGet(),doPost()中做相应的处理，并将回应HttpServletResponse反馈给用户<br>Servlet可以设置初始化参数，供Servlet内部使用<br>一个Servlet类只会有一个实例，在它初始化时调用init()方法，销毁时调用destroy()方法<br>Servlet需要在web.xml中配置，一个Servlet可以设置多个URL访问<br>Servlet不是线程安全，因此要谨慎使用类变量<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/09/Java基础-servlet与jsp/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
                 <time class="level-item has-text-grey" datetime="2018-10-09T07:40:00.000Z">2018-10-09</time>
                 
                 <div class="level-item">
@@ -519,58 +160,6 @@
             <div class="level-start">
                 <div class="level-item">
                 <a class="button is-size-7 is-light" href="/2018/10/09/Java基础-java只有值传递/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-09T07:00:00.000Z">2018-10-09</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java基础/">java基础</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    5 分钟 读完 (大约 822 个字)
-                </span>
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/10/09/Java基础-equals与hashcode/">Java基础-equals与hashcode</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="equals方法"><a href="#equals方法" class="headerlink" title="equals方法"></a>equals方法</h3><p>euqals()作为Object的方法，用于判断两个对象是否相等<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object obj)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容<br></p>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/2018/10/09/Java基础-equals与hashcode/#more">阅读更多</a>
                 </div>
             </div>
         </div>
@@ -695,7 +284,7 @@
                         文章
                     </p>
                     <p class="title has-text-weight-normal">
-                        30
+                        22
                     </p>
                 </div>
             </div>
@@ -705,7 +294,7 @@
                         分类
                     </p>
                     <p class="title has-text-weight-normal">
-                        10
+                        9
                     </p>
                 </div>
             </div>
@@ -811,7 +400,7 @@
                 <span class="level-item">Mysql</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">6</span>
+                <span class="level-item tag">5</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/categories/Nginx/">
@@ -841,14 +430,6 @@
         <a class="level is-marginless" href="/categories/java基础/">
             <span class="level-start">
                 <span class="level-item">java基础</span>
-            </span>
-            <span class="level-end">
-                <span class="level-item tag">7</span>
-            </span>
-        </a></li><li>
-        <a class="level is-marginless" href="/categories/java集合/">
-            <span class="level-start">
-                <span class="level-item">java集合</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">3</span>
@@ -905,7 +486,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-12T12:30:00.000Z">2019-11-12</time></div>
-                    <a href="/2019/11/12/Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH-200-(OK)解决办法/" class="has-link-black-ter is-size-6">Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法</a>
+                    <a href="/2019/11/12/Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法/" class="has-link-black-ter is-size-6">Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Nginx/">Nginx</a>
                     </p>
@@ -1036,7 +617,7 @@
                     <span class="level-item">十一月 2018</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -1047,7 +628,7 @@
                     <span class="level-item">十月 2018</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">15</span>
+                    <span class="level-item tag">8</span>
                 </span>
             </a>
         </li>
@@ -1117,7 +698,7 @@
             <div class="media-content">
                 <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-11-12T12:30:00.000Z">2019-11-12</time></div>
-                    <a href="/2019/11/12/Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH-200-(OK)解决办法/" class="has-link-black-ter is-size-6">Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法</a>
+                    <a href="/2019/11/12/Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法/" class="has-link-black-ter is-size-6">Nginx-记一次ERR_CONTENT_LENGTH_MISMATCH 200 (OK)解决办法</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/categories/Nginx/">Nginx</a>
                     </p>
@@ -1248,7 +829,7 @@
                     <span class="level-item">十一月 2018</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -1259,7 +840,7 @@
                     <span class="level-item">十月 2018</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">15</span>
+                    <span class="level-item tag">8</span>
                 </span>
             </a>
         </li>

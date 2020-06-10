@@ -2,26 +2,26 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.8.0">
     <meta charset="utf-8">
-<title>Java基础-Java中对象和引用的关系 - ChangJie&#39;s blog</title>
+<title>Java基础-equals与hashcode - ChangJie&#39;s blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
 
-    <meta name="description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java基础-Java中对象和引用的关系">
-<meta property="og:url" content="http://yoursite.com/2018/10/17/Java基础-Java中对象和引用的理解/index.html">
+    <meta name="description" content="equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Java基础-equals与hashcode">
+<meta property="og:url" content="http://yoursite.com/deleted/Java基础-equals与hashcode.html">
 <meta property="og:site_name" content="ChangJie&#39;s blog">
-<meta property="og:description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象">
+<meta property="og:description" content="equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-01-07T10:12:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java基础-Java中对象和引用的关系">
-<meta name="twitter:description" content="1Animal an = new Animal(); 创建一个对象，细化这个动作为:  右面的”new Animal”，在堆空间里创建一个Animal对象 左面的”Animal an” 创建了一个Animal类的一个引用变量 “=” 操作符使对象引用指向刚才创建的那个Animal对象">
+<meta name="twitter:title" content="Java基础-equals与hashcode">
+<meta name="twitter:description" content="equals方法euqals()作为Object的方法，用于判断两个对象是否相等123public boolean equals(Object obj) &amp;#123;    return (this == obj);&amp;#125; 很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容">
 
 
 
-<link rel="alternative" href="https://changjie.me/atom.xml" title="Java基础-Java中对象和引用的关系" type="application/atom+xml">
+<link rel="alternative" href="https://changjie.me/atom.xml" title="Java基础-equals与hashcode" type="application/atom+xml">
 
 
 
@@ -89,7 +89,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="Java基础-Java中对象和引用的关系" height="28">
+                <img src="/images/logo.png" alt="Java基础-equals与hashcode" height="28">
             
             </a>
         </div>
@@ -130,55 +130,22 @@
     
     <div class="card-content article ">
         
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-10-17T06:00:00.000Z">2018-10-17</time>
-                
-                <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/java基础/">java基础</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    2 分钟 读完 (大约 327 个字)
-                </span>
-                
-            </div>
-        </div>
-        
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                Java基础-Java中对象和引用的关系
+                Java基础-equals与hashcode
             
         </h1>
         <div class="content">
-            <figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Animal an = <span class="hljs-keyword">new</span> Animal();</span><br></pre></td></tr></table></figure>
-<p>创建一个对象，细化这个动作为:</p>
-<ol>
-<li>右面的”new Animal”，在堆空间里创建一个Animal对象</li>
-<li>左面的”Animal an” 创建了一个Animal类的一个引用变量</li>
-<li>“=” 操作符使对象引用指向刚才创建的那个Animal对象<a id="more"></a>
-等同于<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Animal an;</span><br><span class="line">an = <span class="hljs-keyword">new</span> Animal();</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>有两个实体：一个是对象引用变量；一个是对象本身<br><!--more--></p>
-<h3 id="对象和引用的区别"><a href="#对象和引用的区别" class="headerlink" title="对象和引用的区别"></a>对象和引用的区别</h3><ol>
-<li>关联性： </li>
-</ol>
-<ul>
-<li>当对象的引用变量指向对象时，两者就互相联系起来，改变引用的属性，就会改变对象的属性</li>
-<li>如果同一个对象被多个引用变量引用的话，则这些引用变量将共同影响这个对象本身 </li>
-<li>在java中，都是通过引用来操纵对象的</li>
-</ul>
-<ol start="2">
-<li>差异性： </li>
-</ol>
-<ul>
-<li>一个对象可以被不同的引用变量来操纵，同时一个引用变量也可以指向不同的对象，但是同一时刻下只能指向一个对象</li>
-<li>从存储空间上来看，对象和引用也是相互独立的，对象一般存储在堆中，而引用存储在堆栈中（存储速度而更快)</li>
-</ul>
+            <h3 id="equals方法"><a href="#equals方法" class="headerlink" title="equals方法"></a>equals方法</h3><p>euqals()作为Object的方法，用于判断两个对象是否相等<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">equals</span><span class="hljs-params">(Object obj)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> (<span class="hljs-keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>很明显是对两个对象的地址值进行的比较（即比较引用是否相同）。像String 、Math、Integer、Double等这些封装类已经将其重写了，比较的是内容<br><a id="more"></a></p>
+<h3 id="hashcode方法"><a href="#hashcode方法" class="headerlink" title="hashcode方法"></a>hashcode方法</h3><p>hashCode()也是Object的方法，用于给对象返回一个hash code值。这个方法被用于hash tables，例如HashMap<br><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">native</span> <span class="hljs-keyword">int</span> <span class="hljs-title">hashCode</span><span class="hljs-params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>是一个本地方法，它的实现是根据本地机器相关,像String 、Math、Integer、Double等这些封装类已经将其重写了</p>
+<h3 id="hashcode作用"><a href="#hashcode作用" class="headerlink" title="hashcode作用"></a>hashcode作用</h3><p>对于java中的set集合元素是不可重复的，元素是否重复通过equals方法判断。<br>但是，如果每增加一个元素就检查一次，那么当元素很多时，比较的次数就非常多了。这显然会大大降低效率。<br>于是，Java采用了哈希表的原理。哈希算法也称为散列算法，是将数据依特定算法直接指定到一个地址上。<br>当集合要添加新的元素时，先调用这个元素的hashCode方法，就一下子能定位到它应该放置的物理位置上。如果这个位置上没有元素，它就可以直接存储在这个位置上，不用再进行任何比较了；如果这个位置上已经有元素了，就调用它的equals方法与新元素进行比较，相同的话就不存了，不相同就散列其它的地址。所以这里存在一个冲突解决的问题。这样一来实际调用equals方法的次数就大大降低了，几乎只需要一两次。<br>简而言之，在集合查找时，hashcode能大大降低对象比较次数，提高查找效率</p>
+<h3 id="规定"><a href="#规定" class="headerlink" title="规定"></a>规定</h3><p>Java对象的eqauls方法和hashCode方法是这样规定的：<br>1、相等（相同）的对象必须具有相等的哈希码（或者散列码）。<br>由于HashMap不允许存放重复元素，所以相同元素的hashcode必须不同<br>所以重写了equals的话必须重写hashcode<br>2、如果两个对象的hashCode相同，它们并不一定相同。<br>不同对象的hashcode可能会相同，即会产生哈希冲突</p>
+<h3 id="哈希冲突"><a href="#哈希冲突" class="headerlink" title="哈希冲突"></a>哈希冲突</h3><p>假如两个Java对象A和B，A和B不相等（eqauls结果为false），但A和B的哈希码相等，将A和B都存入HashMap时会发生哈希冲突，也就是A和B存放在HashMap内部数组的位置索引相同这时HashMap会在该位置建立一个链表，将A和B串起来放在该位置，显然，该情况不违反HashMap的使用原则，是允许的。当然，哈希冲突越少越好，尽量采用好的哈希算法以避免哈希冲突</p>
+<h3 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h3><blockquote>
+<p><a href="https://www.cnblogs.com/Qian123/p/5703507.html" target="_blank" rel="noopener">Java提高篇——equals()与hashCode()方法详解</a>  </p>
+</blockquote>
 
         </div>
         
@@ -190,27 +157,6 @@
 
 
 
-
-<div class="card card-transparent">
-    <div class="level post-navigation is-flex-wrap is-mobile">
-        
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/2018/10/19/Spring-Spring Quartz和Task的区别/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Spring-Spring Quartz和Task的区别</span>
-            </a>
-        </div>
-        
-        
-        <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/2018/10/12/Java集合-Map之HashMap/">
-                <span class="level-item">Java集合-Map之HashMap</span>
-                <i class="level-item fas fa-chevron-right"></i>
-            </a>
-        </div>
-        
-    </div>
-</div>
 
 
 </div>
