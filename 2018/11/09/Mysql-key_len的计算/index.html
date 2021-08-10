@@ -14,12 +14,12 @@
 <meta property="og:site_name" content="ChangJie&#39;s blog">
 <meta property="og:description" content="当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://static.changjie.me/img/WX20181109-111215.png">
-<meta property="og:updated_time" content="2019-07-31T02:15:21.000Z">
+<meta property="og:image" content="https://static.changjie.site/img/WX20181109-111215.png">
+<meta property="og:updated_time" content="2021-08-10T08:49:06.535Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql-key_len的计算">
 <meta name="twitter:description" content="当用Explain查看SQL的执行计划时，里面有列显示了 key_len 的值，根据这个值可以判断索引的长度，在组合索引里面可以更清楚的了解到了哪部分字段使用到了索引">
-<meta name="twitter:image" content="https://static.changjie.me/img/WX20181109-111215.png">
+<meta name="twitter:image" content="https://static.changjie.site/img/WX20181109-111215.png">
 
 
 
@@ -210,7 +210,7 @@
 <blockquote>
 <p>int（10）这里的10指的是数值的宽度，并不是字节数，如果使用了zerofill，当结果小于显示宽度时，左边用0补齐，当等于或超过显示宽度时正常显示，没啥用<br>char(20)、varchar(20)，20指的是字符而不是字节（4.0版本以上，以下指的是字节）<br>字符和字节的转换要看字符集，utf-8下，1字符=3字节；gbk下，1字符=2字节</p>
 </blockquote>
-<h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p><img src="https://static.changjie.me/img/WX20181109-111215.png" alt=""></p>
+<h3 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h3><p><img src="https://static.changjie.site/img/WX20181109-111215.png" alt=""></p>
 <p>此时索引长度是42个字节<br>由于表的字符集是utf8,  1char=3byte，10 * 3=30<br>由于varchar是变长类型，需要额外的2个字节，固定长度字段(char,int)不需要额外的字节<br>由于字段默认为null，所以需要1个字节的额外空间<br>(30 + 2 + 1) + (4 + 1) + 4 = 42</p>
 <h3 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h3><p>对于联合索引mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配，比如a = 1 and b = 2 and c &gt; 3 and d = 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，如果建立(a,b,d,c)的索引则都可以用到，a,b,d的顺序可以任意调整</p>
 

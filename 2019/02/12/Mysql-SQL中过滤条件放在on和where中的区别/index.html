@@ -14,19 +14,19 @@
 <meta property="og:site_name" content="ChangJie&#39;s blog">
 <meta property="og:description" content="在使用多表关联查询时，连接条件放在on和where得到的结果集是不同的">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-164112@2x.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-164356@2x.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-164540.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-164844.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-164844.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-165256.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-165527.png">
-<meta property="og:image" content="https://static.changjie.me/img/WX20190212-170212.png">
-<meta property="og:updated_time" content="2019-02-12T09:12:10.000Z">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-164112@2x.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-164356@2x.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-164540.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-164844.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-164844.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-165256.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-165527.png">
+<meta property="og:image" content="https://static.changjie.site/img/WX20190212-170212.png">
+<meta property="og:updated_time" content="2021-08-10T08:49:06.527Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mysql-SQL中过滤条件放在on和where中的区别">
 <meta name="twitter:description" content="在使用多表关联查询时，连接条件放在on和where得到的结果集是不同的">
-<meta name="twitter:image" content="https://static.changjie.me/img/WX20190212-164112@2x.png">
+<meta name="twitter:image" content="https://static.changjie.site/img/WX20190212-164112@2x.png">
 
 
 
@@ -165,19 +165,19 @@
         <div class="content">
             <p>在使用多表关联查询时，连接条件放在on和where得到的结果集是不同的<br><a id="more"></a></p>
 <h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person;</span><br><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> <span class="hljs-keyword">account</span>;</span><br></pre></td></tr></table></figure>
-<p><img src="https://static.changjie.me/img/WX20190212-164112@2x.png" alt=""><br><img src="https://static.changjie.me/img/WX20190212-164356@2x.png" alt=""></p>
+<p><img src="https://static.changjie.site/img/WX20190212-164112@2x.png" alt=""><br><img src="https://static.changjie.site/img/WX20190212-164356@2x.png" alt=""></p>
 <h3 id="内连接、全连接"><a href="#内连接、全连接" class="headerlink" title="内连接、全连接"></a>内连接、全连接</h3><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id;</span><br></pre></td></tr></table></figure>
-<p>内连接的结果集返回交集数据<br><img src="https://static.changjie.me/img/WX20190212-164540.png" alt=""></p>
+<p>内连接的结果集返回交集数据<br><img src="https://static.changjie.site/img/WX20190212-164540.png" alt=""></p>
 <p>使用on条件<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id <span class="hljs-keyword">and</span> p.id!=<span class="hljs-number">4</span>;</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://static.changjie.me/img/WX20190212-164844.png" alt=""></p>
+<p><img src="https://static.changjie.site/img/WX20190212-164844.png" alt=""></p>
 <p>使用where条件<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id <span class="hljs-keyword">where</span> p.id!=<span class="hljs-number">4</span>;</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://static.changjie.me/img/WX20190212-164844.png" alt=""><br>结果集相同，可知内连接时过滤条件使用在on和where上时作用相同</p>
+<p><img src="https://static.changjie.site/img/WX20190212-164844.png" alt=""><br>结果集相同，可知内连接时过滤条件使用在on和where上时作用相同</p>
 <h3 id="左连接"><a href="#左连接" class="headerlink" title="左连接"></a>左连接</h3><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">inner</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id;</span><br></pre></td></tr></table></figure>
-<p>左连接的结果集返回左表数据，不满足连接条件来自右表字段为空<br><img src="https://static.changjie.me/img/WX20190212-165256.png" alt=""></p>
+<p>左连接的结果集返回左表数据，不满足连接条件来自右表字段为空<br><img src="https://static.changjie.site/img/WX20190212-165256.png" alt=""></p>
 <p>使用on条件<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id <span class="hljs-keyword">and</span> p.id!=<span class="hljs-number">4</span>;</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://static.changjie.me/img/WX20190212-165527.png" alt=""><br>id为4的记录还在，这是由left join的特性决定的，使用left join时on后面的条件只对右表有效（可以看到右表的id=4的记录没了）</p>
+<p><img src="https://static.changjie.site/img/WX20190212-165527.png" alt=""><br>id为4的记录还在，这是由left join的特性决定的，使用left join时on后面的条件只对右表有效（可以看到右表的id=4的记录没了）</p>
 <p>使用where条件<br><figure class="highlight sql hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">select</span> * <span class="hljs-keyword">from</span> person p <span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span> <span class="hljs-keyword">account</span> a <span class="hljs-keyword">on</span> p.id=a.id <span class="hljs-keyword">where</span> p.id!=<span class="hljs-number">4</span>;</span><br></pre></td></tr></table></figure></p>
-<p><img src="https://static.changjie.me/img/WX20190212-170212.png" alt=""><br>可见id为4的记录没了</p>
+<p><img src="https://static.changjie.site/img/WX20190212-170212.png" alt=""><br>可见id为4的记录没了</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实on上的过滤条件就是先对右表数据过滤，再与左表连接，再生成连接中间表<br>where是对中间表进行过滤</p>
 
         </div>
